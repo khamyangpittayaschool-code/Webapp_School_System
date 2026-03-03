@@ -1,6 +1,6 @@
 // --- API Configuration ---
 // เปลี่ยน URL นี้เป็น Web App URL ที่ได้จากการ Deploy Google Apps Script ใหม่
-const API_URL = 'https://script.google.com/macros/s/AKfycbywQ0W7vBq7d.../exec';
+const API_URL = 'https://script.google.com/macros/s/AKfycbzd0b5jCTtrKPOqna0XZIQ237I_-z_2MkoLrxZMHkxrgV6JyCoRxHaUGGikwt9ZHJsc/exec';
 
 // --- Mock API Wrapper for Google Apps Script ---
 // เพื่อให้โค้ดเก่าที่ใช้ google.script.run ยังทำงานได้บน GitHub
@@ -1369,3 +1369,4 @@ function loadAffairsRecords() {
         });
     }, 800);
 }
+
