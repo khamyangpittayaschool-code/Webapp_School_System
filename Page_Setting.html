@@ -1,0 +1,174 @@
+<!-- Page_Setting.html: ตั้งค่าระบบ -->
+
+<div id="setting-dashboard-view" class="block animate-fade-in">
+    <div class="mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+            <h2 class="text-2xl font-bold text-slate-800 flex items-center gap-3">
+                <div
+                    class="w-10 h-10 bg-slate-100 rounded-xl flex items-center justify-center text-slate-600 shadow-sm border border-slate-200">
+                    <i class="fa-solid fa-gear"></i>
+                </div>
+                ตั้งค่าระบบ
+            </h2>
+            <p class="text-slate-500 text-sm mt-1 ml-14">จัดการข้อมูลโรงเรียน ผู้ใช้งาน และการตั้งค่าพื้นฐาน</p>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-8">
+
+        <!-- Settings Sidebar -->
+        <div class="lg:col-span-1">
+            <div class="bg-white rounded-3xl shadow-sm border border-slate-100 p-2 sticky top-6">
+                <nav class="space-y-1">
+                    <a href="#"
+                        class="flex items-center gap-3 px-4 py-3 bg-blue-50 text-blue-600 rounded-2xl font-bold transition">
+                        <i class="fa-solid fa-school w-5 text-center"></i> ข้อมูลโรงเรียน
+                    </a>
+                    <a href="#"
+                        class="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-50 rounded-2xl font-medium transition cursor-pointer">
+                        <i class="fa-solid fa-users-gear w-5 text-center"></i> จัดการผู้ใช้งาน
+                    </a>
+                    <a href="#"
+                        class="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-50 rounded-2xl font-medium transition cursor-pointer">
+                        <i class="fa-solid fa-clock w-5 text-center"></i> ภาคเรียน/ปีการศึกษา
+                    </a>
+                    <a href="#"
+                        class="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-50 rounded-2xl font-medium transition cursor-pointer">
+                        <i class="fa-solid fa-shield-halved w-5 text-center"></i> สิทธิ์การเข้าถึง
+                    </a>
+                    <a href="#"
+                        class="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-50 rounded-2xl font-medium transition cursor-pointer">
+                        <i class="fa-solid fa-database w-5 text-center"></i> สำรองข้อมูล
+                    </a>
+                </nav>
+            </div>
+        </div>
+
+        <!-- Settings Content -->
+        <div class="lg:col-span-3 space-y-6">
+
+            <!-- General Info -->
+            <div class="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden">
+                <div class="p-6 border-b border-slate-100 bg-slate-50/50 flex justify-between items-center">
+                    <h3 class="font-bold text-slate-800 text-lg">ข้อมูลโรงเรียนพื้นฐาน</h3>
+                    <button
+                        class="bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold px-4 py-2 rounded-xl transition shadow-sm">บันทึกข้อมูล</button>
+                </div>
+
+                <div class="p-6 space-y-5">
+                    <div class="flex items-start gap-6 border-b border-slate-100 pb-6">
+                        <div class="shrink-0">
+                            <div
+                                class="w-24 h-24 bg-slate-100 rounded-2xl border-2 border-dashed border-slate-300 flex flex-col items-center justify-center text-slate-400 cursor-pointer hover:bg-slate-50 hover:border-blue-400 hover:text-blue-500 transition relative overflow-hidden group">
+                                <img src="https://picsum.photos/150"
+                                    class="absolute inset-0 w-full h-full object-cover z-0">
+                                <div
+                                    class="absolute inset-0 bg-black/40 flex flex-col items-center justify-center opacity-0 group-hover:opacity-100 transition z-10 text-white">
+                                    <i class="fa-solid fa-camera text-xl mb-1"></i>
+                                    <span class="text-[10px] font-bold">เปลี่ยนตราสัญลักษณ์</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex-1 space-y-4">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-500 mb-1 ml-1">ชื่อโรงเรียน
+                                        (ภาษาไทย)
+                                        <span class="text-red-500">*</span></label>
+                                    <input type="text"
+                                        class="w-full p-3 bg-white border border-slate-200 rounded-xl text-sm text-slate-800 font-bold focus:ring-2 focus:ring-blue-500 outline-none transition"
+                                        value="โรงเรียนตัวอย่างวิทยา" readonly>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-500 mb-1 ml-1">ชื่อโรงเรียน
+                                        (ภาษาอังกฤษ)</label>
+                                    <input type="text"
+                                        class="w-full p-3 bg-white border border-slate-200 rounded-xl text-sm text-slate-800 focus:ring-2 focus:ring-blue-500 outline-none transition"
+                                        value="Demo Wittaya School">
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-500 mb-1 ml-1">รหัสสถานศึกษา (10
+                                        หลัก)</label>
+                                    <input type="text"
+                                        class="w-full p-3 bg-white border border-slate-200 rounded-xl text-sm text-slate-800 focus:ring-2 focus:ring-blue-500 outline-none transition"
+                                        value="1010000000">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-500 mb-1 ml-1">สังกัด</label>
+                                    <select
+                                        class="w-full p-3 bg-white border border-slate-200 rounded-xl text-sm text-slate-800 focus:ring-2 focus:ring-blue-500 outline-none transition cursor-pointer">
+                                        <option>สพฐ.</option>
+                                        <option selected>กทม.</option>
+                                        <option>สช.</option>
+                                        <option>อปท.</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label
+                                        class="block text-xs font-bold text-slate-500 mb-1 ml-1">เขตพื้นที่การศึกษา</label>
+                                    <input type="text"
+                                        class="w-full p-3 bg-white border border-slate-200 rounded-xl text-sm text-slate-800 focus:ring-2 focus:ring-blue-500 outline-none transition"
+                                        value="สำนักการศึกษากรุงเทพมหานคร">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h4 class="font-bold text-slate-700 text-sm mb-2"><i
+                            class="fa-solid fa-location-dot text-slate-400 mr-2"></i> ข้อมูลที่ตั้งติดต่อ</h4>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="md:col-span-2">
+                            <label class="block text-xs font-bold text-slate-500 mb-1 ml-1">ที่อยู่</label>
+                            <input type="text"
+                                class="w-full p-3 bg-white border border-slate-200 rounded-xl text-sm text-slate-800 focus:ring-2 focus:ring-blue-500 outline-none transition"
+                                value="123 ถนนตัวอย่าง แขวงตัวอย่าง เขตเขตบางกะปิ กรุงเทพมหานคร 10240">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-500 mb-1 ml-1">เบอร์โทรศัพท์</label>
+                            <input type="text"
+                                class="w-full p-3 bg-white border border-slate-200 rounded-xl text-sm text-slate-800 focus:ring-2 focus:ring-blue-500 outline-none transition"
+                                value="02-123-4567">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-500 mb-1 ml-1">อีเมลโรงเรียน</label>
+                            <input type="email"
+                                class="w-full p-3 bg-white border border-slate-200 rounded-xl text-sm text-slate-800 focus:ring-2 focus:ring-blue-500 outline-none transition"
+                                value="admin@demoschool.ac.th">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Danger Zone -->
+            <div class="bg-white rounded-3xl shadow-sm border border-red-100 overflow-hidden relative">
+                <div class="absolute left-0 top-0 bottom-0 w-1.5 bg-red-500"></div>
+                <div class="p-6">
+                    <h3 class="font-bold text-red-600 text-lg mb-1">พื้นที่อันตราย (Danger Zone)</h3>
+                    <p class="text-sm text-slate-500 mb-4">การกระทำในส่วนนี้อาจส่งผลกระทบต่อข้อมูลทั้งระบบ</p>
+
+                    <div class="flex items-center justify-between py-4 border-t border-slate-100">
+                        <div>
+                            <p class="font-bold text-slate-800 text-sm">เลื่อนชั้นนักเรียนทั้งหมดประจำปี</p>
+                            <p class="text-xs text-slate-500 mt-0.5">ทำงานเมื่อสิ้นสุดปีการศึกษา
+                                เพื่อเลื่อนชั้นนักเรียนอัตโนมัติ</p>
+                        </div>
+                        <button
+                            class="bg-white border border-slate-200 hover:border-red-500 hover:text-red-600 text-slate-600 font-bold px-4 py-2 rounded-xl transition text-sm">เลื่อนชั้นประจำปี</button>
+                    </div>
+
+                    <div class="flex items-center justify-between py-4 border-t border-slate-100">
+                        <div>
+                            <p class="font-bold text-slate-800 text-sm">ล้างข้อมูลชั่วคราว (Clear Cache)</p>
+                            <p class="text-xs text-slate-500 mt-0.5">ลบแคชของระบบหากการแสดงผลผิดปกติ</p>
+                        </div>
+                        <button
+                            class="bg-white border border-slate-200 hover:bg-slate-50 text-slate-600 font-bold px-4 py-2 rounded-xl transition text-sm">ล้างข้อมูล</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

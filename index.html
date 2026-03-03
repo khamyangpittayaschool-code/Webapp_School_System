@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> School Management System </title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.cdnfonts.com/css/google-sans" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        // --- Global Variables ---
+        const SESSION_KEY = 'SMART_SCHOOL_SESSION_V2';
+        var currentUser = null; // ตัวแปรนี้สำคัญมาก ไฟล์ที่ include เข้ามาจะใช้ตัวนี้อ้างอิง
+    </script>
+
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        /* =========================================
+           1. CSS พื้นฐาน & Layout
+           ========================================= */
+        body {
+            font-family: 'Google Sans', 'Noto Sans Thai', sans-serif;
+            background-color: #F8FAFC;
+            margin: 0;
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* Scrollbar สวยๆ */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #475569;
+            border-radius: 4px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #64748b;
+        }
+
+        /* =========================================
+           2. Dark Sidebar Styling
+           ========================================= */
+        .sidebar-dark {
+            background-color: #1e293b;
+            color: #cbd5e1;
+            display: flex;
+            flex-direction: column;
+            width: 280px;
+            height: 100vh;
+            position: fixed;
+            left: 0;
+            top: 0;
+            z-index: 50;
+            transform: translateX(-100%);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 4px 0 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .sidebar-dark.show {
+            transform: translateX(0);
+        }
+
+        .menu-header {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            font-weight: 700;
+            color: #64748b;
+            padding: 1.5rem 1.5rem 0.5rem 1.5rem;
+            letter-spacing: 0.05em;
+        }
+
+        .menu-item {
+            display: flex;
+            align-items: center;
+            padding: 10px 1.5rem;
+            color: #94a3b8;
+            text-decoration: none;
+            transition: all 0.2s;
+            font-size: 0.9rem;
+            border-left: 3px solid transparent;
+            cursor: pointer;
+        }
+
+        .menu-item:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+            color: #f1f5f9;
+        }
+
+        .menu-item.active {
+            background-color: #334155;
+            color: #ffffff;
+            border-left-color: #3b82f6;
+        }
+
+        .menu-item i {
+            width: 25px;
+            text-align: center;
+            margin-right: 10px;
+            font-size: 1.1em;
+        }
+
+        /* =========================================
+           3. Main Content Styling
+           ========================================= */
+        .main-content {
+            margin-left: 0;
+            padding: 16px;
+            height: 100vh;
+            overflow-y: auto;
+            transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background-color: #F8FAFC;
+        }
+
+        /* Mobile Overlay */
+        .mobile-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.4);
+            z-index: 40;
+            display: none;
+            backdrop-filter: blur(3px);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .mobile-overlay.show {
+            display: block;
+            opacity: 1;
+        }
+
+        /* =========================================
+           4. Responsive (PC / Desktop First) -> Changed to Mobile First (min-width)
+           ========================================= */
+        @media (min-width: 768px) {
+            .sidebar-dark {
+                transform: translateX(0);
+                width: 260px;
+            }
+
+            .main-content {
+                margin-left: 260px;
+                padding: 32px;
+            }
+
+            .mobile-overlay {
+                display: none !important;
+            }
+        }
+
+        /* Utility */
+        .hidden {
+            display: none !important;
+        }
+
+        .page-content {
+            animation: fadeIn 0.3s ease-in-out;
+            padding-bottom: 80px;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="login-screen"
+        class="fixed inset-0 z-[100] flex items-center justify-center bg-gradient-to-br from-slate-800 to-slate-900 px-4">
+        <div class="bg-white/10 backdrop-blur-lg p-8 rounded-[2rem] shadow-2xl w-full max-w-sm border border-white/20">
+            <div class="text-center mb-8">
+                <div
+                    class="w-16 h-16 bg-blue-600 rounded-2xl mx-auto flex items-center justify-center text-white text-3xl font-bold shadow-lg mb-4">
+                    S</div>
+                <h2 class="text-2xl font-bold text-white">เข้าสู่ระบบ</h2>
+                <p class="text-gray-400 text-sm">
+                    School Management System
+                </p>
+            </div>
+            <form onsubmit="handleLogin(event)" class="space-y-4">
+                <input type="text" id="username"
+                    class="w-full px-4 py-3 bg-slate-700/50 border border-slate-600 text-white rounded-xl focus:ring-2 focus:ring-blue-500 outline-none placeholder-gray-400"
+                    placeholder="Username" required>
+                <input type="password" id="password"
+                    class="w-full px-4 py-3 bg-slate-700/50 border border-slate-600 text-white rounded-xl focus:ring-2 focus:ring-blue-500 outline-none placeholder-gray-400"
+                    placeholder="Password" required>
+                <button type="submit" id="btnLogin"
+                    class="w-full py-3 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-xl shadow-lg transition-all">
+                    เข้าสู่ระบบ
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div id="app-container" class="hidden">
+
+        <div id="mobile-backdrop" onclick="toggleSidebar()" class="mobile-overlay md:hidden"></div>
+
+        <aside id="sidebar" class="sidebar-dark custom-scrollbar">
+            <div class="px-6 py-6 flex items-center gap-3">
+                <div class="shrink-0">
+                    <div
+                        class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold shadow-lg">
+                        S</div>
+                </div>
+                <div class="min-w-0 flex-1">
+                    <h1 class="font-bold text-white text-sm leading-tight break-words">
+                        School Management System
+                    </h1>
+                </div>
+            </div>
+
+            <div class="px-6 pb-6 border-b border-slate-700 mb-2">
+                <div class="flex items-center gap-3">
+                    <div class="shrink-0 w-10 h-10 rounded-full bg-slate-600 flex items-center justify-center text-white font-bold border-2 border-slate-500 shadow-sm"
+                        id="sidebar-avatar">
+                        U
+                    </div>
+                    <div class="min-w-0 overflow-hidden">
+                        <p class="text-sm font-bold text-white truncate leading-tight" id="user-name-display">Loading...
+                        </p>
+                        <p class="text-[10px] text-green-400 truncate flex items-center gap-1 mt-0.5">
+                            <i class="fa-solid fa-circle text-[6px]"></i>
+                            <span id="user-role-display">User</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <nav class="flex-1 pb-10 overflow-y-auto custom-scrollbar">
+
+                <div class="menu-header">Dashboard</div>
+                <a onclick="switchPage('page-home', this)" class="menu-item active">
+                    <i class="fa-solid fa-chart-pie"></i>
+                    <span>ภาพรวม</span>
+                </a>
+
+                <div class="menu-header">Management</div>
+                <a onclick="switchPage('page-academic', this)" class="menu-item relative">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                    <span>วิชาการ</span>
+                    <span id="sidebar-badge-academic"
+                        class="absolute right-4 bg-red-500 text-white text-[9px] font-bold px-1.5 py-0.5 rounded-full hidden">0</span>
+                </a>
+                <a onclick="switchPage('page-budget', this)" class="menu-item">
+                    <i class="fa-solid fa-sack-dollar"></i>
+                    <span>งบประมาณ</span>
+                </a>
+                <a onclick="switchPage('page-hr', this)" class="menu-item">
+                    <i class="fa-solid fa-users"></i>
+                    <span>บุคคล</span>
+                </a>
+                <a onclick="switchPage('page-general', this)" class="menu-item">
+                    <i class="fa-solid fa-building"></i>
+                    <span>ทั่วไป (เยี่ยมบ้าน)</span>
+                </a>
+                <a onclick="switchPage('page-document', this)" class="menu-item">
+                    <i class="fa-solid fa-folder-open"></i>
+                    <span>งานสารบรรณ</span>
+                </a>
+
+                <div class="menu-header">Activities</div>
+                <a onclick="switchPage('page-student-council', this)" class="menu-item">
+                    <i class="fa-solid fa-bullhorn"></i>
+                    <span>สภานักเรียน</span>
+                </a>
+
+                <div class="menu-header">System</div>
+                <a onclick="switchPage('page-setting', this)" class="menu-item">
+                    <i class="fa-solid fa-gear"></i>
+                    <span>ตั้งค่า</span>
+                </a>
+
+                <div class="mt-4 px-6">
+                    <button onclick="logout()"
+                        class="w-full flex items-center justify-center gap-2 py-2 text-red-400 hover:bg-red-500/10 hover:text-red-300 rounded-lg transition-colors text-sm font-bold border border-transparent hover:border-red-500/20">
+                        <i class="fa-solid fa-power-off"></i> ออกจากระบบ
+                    </button>
+                </div>
+            </nav>
+        </aside>
+
+        <main class="main-content custom-scrollbar">
+            <header class="flex justify-between items-center mb-6 md:hidden">
+                <button onclick="toggleSidebar()"
+                    class="p-2 bg-white rounded-lg shadow-sm text-gray-600 border border-gray-100">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+                <h1 class="text-lg font-bold text-gray-800" id="header-title-mobile">
+                    School Management System
+                </h1>
+                <div class="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold text-sm"
+                    id="header-avatar">U</div>
+            </header>
+
+            <div class="hidden md:flex justify-between items-end mb-8 pb-4 border-b border-gray-200">
+                <div>
+                    <h1 class="text-2xl font-bold text-slate-800" id="header-title">ภาพรวมระบบ</h1>
+                    <p class="text-xs text-slate-500 mt-1">วันที่
+                        <span id="current-date"></span>
+                    </p>
+                </div>
+            </div>
+
+            <div id="page-home" class="page-content">
+                <div class="bg-white p-10 rounded-[1.5rem] text-center shadow-sm border border-gray-100">
+                    <div
+                        class="w-20 h-20 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-4 text-blue-600 text-3xl">
+                        <i class="fa-solid fa-chart-pie"></i>
+                    </div>
+                    <h2 class="text-xl font-bold text-gray-800">Dashboard</h2>
+                    <p class="text-gray-400">เลือกเมนูทางซ้ายเพื่อเริ่มงาน</p>
+                </div>
+            </div>
+
+            <div id="page-academic" class="page-content hidden"></div>
+            <div id="page-budget" class="page-content hidden"></div>
+            <div id="page-hr" class="page-content hidden"></div>
+            <div id="page-general" class="page-content hidden"></div>
+            <div id="page-document" class="page-content hidden"></div>
+            <div id="page-student-council" class="page-content hidden"></div>
+            <div id="page-setting" class="page-content hidden"></div>
+        </main>
+    </div>
+
+    <!-- Loading Overlay for API calls -->
+    <div id="loading-overlay"
+        class="fixed inset-0 bg-slate-50/90 z-[110] hidden flex-col justify-center items-center backdrop-blur-sm">
+        <div class="w-14 h-14 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin"></div>
+        <p class="mt-4 text-slate-800 font-semibold tracking-wide animate-pulse" id="loading-text">กำลังประมวลผล...</p>
+    </div>
+
+    <script src="app.js"></script>
+
+    <script>
+        window.onload = function () {
+            // Load Pages asynchronously
+            const pages = [
+                { id: 'page-academic', file: 'Page_Academic.html' },
+                { id: 'page-budget', file: 'Page_Budget.html' },
+                { id: 'page-hr', file: 'Page_HR.html' },
+                { id: 'page-general', file: 'Page_General.html' },
+                { id: 'page-document', file: 'Page_Document.html' },
+                { id: 'page-student-council', file: 'Page_StudentCouncil.html' },
+                { id: 'page-setting', file: 'Page_Setting.html' }
+            ];
+
+            const loadPromises = pages.map(p =>
+                fetch(p.file).then(r => r.text()).then(html => {
+                    document.getElementById(p.id).innerHTML = html;
+                }).catch(err => console.error("Error loading component:", p.file, err))
+            );
+
+            Promise.all(loadPromises).then(() => {
+                checkSession();
+                document.getElementById('current-date').innerText = new Date().toLocaleDateString('th-TH');
+            });
+        };
+
+        function checkSession() {
+            const savedSession = localStorage.getItem(SESSION_KEY);
+            if (savedSession) {
+                try {
+                    currentUser = JSON.parse(savedSession);
+                    showDashboard();
+                } catch (e) { showLogin(); }
+            } else { showLogin(); }
+        }
+
+        function showLogin() {
+            document.getElementById('login-screen').classList.remove('hidden');
+            document.getElementById('app-container').classList.add('hidden');
+        }
+
+        function showDashboard() {
+            document.getElementById('login-screen').classList.add('hidden');
+            document.getElementById('app-container').classList.remove('hidden');
+
+            if (currentUser) {
+                // Update UI with User Info
+                const name = currentUser.name || currentUser.username;
+                const role = currentUser.role || 'User';
+                const initial = name.charAt(0).toUpperCase();
+
+                if (document.getElementById('header-avatar')) document.getElementById('header-avatar').innerText = initial;
+                if (document.getElementById('sidebar-avatar')) document.getElementById('sidebar-avatar').innerText = initial;
+                if (document.getElementById('user-name-display')) document.getElementById('user-name-display').innerText = name;
+                if (document.getElementById('user-role-display')) document.getElementById('user-role-display').innerText = role;
+
+                // โหลดข้อมูล Dashboard
+                if (!document.getElementById('page-general').classList.contains('hidden')) {
+                    triggerLoadData('page-general');
+                }
+            }
+        }
+
+        function handleLogin(e) {
+            e.preventDefault();
+            const u = document.getElementById('username').value;
+            const p = document.getElementById('password').value;
+            const btn = document.getElementById('btnLogin');
+            const originalText = btn.innerText;
+
+            // Loading State
+            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i>';
+            btn.disabled = true;
+
+            // เรียก Backend ผ่านชุด api wrapper ใน app.js
+            google.script.run.withSuccessHandler(function (res) {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+
+                if (res.status === 'success') {
+                    // บันทึก User ลงตัวแปรและ LocalStorage
+                    currentUser = res.data; // res จะมี {status, data: {username, role, name, ...}}
+                    localStorage.setItem(SESSION_KEY, JSON.stringify(currentUser));
+
+                    Swal.fire({ icon: 'success', title: 'ยินดีต้อนรับ', text: currentUser.name, timer: 1500, showConfirmButton: false })
+                        .then(() => showDashboard());
+                } else {
+                    Swal.fire('Login Failed', res.message, 'error');
+                }
+            }).checkLogin(u, p);
+        }
+
+        function logout() {
+            Swal.fire({
+                title: 'ออกจากระบบ?', icon: 'question', showCancelButton: true,
+                confirmButtonColor: '#ef4444', cancelButtonColor: '#64748b',
+                confirmButtonText: 'ออกจากระบบ', cancelButtonText: 'ยกเลิก'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    localStorage.removeItem(SESSION_KEY);
+                    currentUser = null;
+                    showLogin();
+                    // Reset UI
+                    document.getElementById('username').value = '';
+                    document.getElementById('password').value = '';
+                    switchPage('page-home', document.querySelector('.menu-item'));
+                }
+            });
+        }
+
+        // --- Switch Page Logic ---
+        function switchPage(pageId, element) {
+            // 1. ซ่อนทุกหน้า
+            document.querySelectorAll('.page-content').forEach(el => el.classList.add('hidden'));
+
+            // 2. แสดงหน้าที่เลือก
+            const target = document.getElementById(pageId);
+            if (target) {
+                target.classList.remove('hidden');
+
+                // เปลี่ยน Header Title
+                const titleMap = { 'page-home': 'ภาพรวมระบบ', 'page-academic': 'ฝ่ายวิชาการ', 'page-budget': 'ฝ่ายงบประมาณ', 'page-hr': 'ฝ่ายบุคคล', 'page-general': 'ฝ่ายทั่วไป', 'page-student-council': 'สภานักเรียน', 'page-setting': 'ตั้งค่าระบบ', 'page-document': 'งานสารบรรณ' };
+                const title = titleMap[pageId] || 'School Management System';
+                if (document.getElementById('header-title')) document.getElementById('header-title').innerText = title;
+                if (document.getElementById('header-title-mobile')) document.getElementById('header-title-mobile').innerText = title;
+
+                // 3. Trigger Load Data ตามหน้า
+                triggerLoadData(pageId);
+            }
+
+            // 4. จัดการ Active Menu
+            if (element) {
+                document.querySelectorAll('.menu-item').forEach(el => el.classList.remove('active'));
+                element.classList.add('active');
+            }
+
+            // 5. Mobile Sidebar Close
+            if (window.innerWidth < 768) toggleSidebar();
+        }
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const backdrop = document.getElementById('mobile-backdrop');
+            sidebar.classList.toggle('show');
+            backdrop.classList.toggle('show');
+        }
+
+        function triggerLoadData(pageId) {
+            if (pageId === 'page-general') {
+                if (typeof loadStudentList === 'function') {
+                    loadStudentList();
+                }
+            } else if (pageId === 'page-academic') {
+                if (typeof loadPendingApprovals === 'function') {
+                    loadPendingApprovals();
+                }
+            } else if (pageId === 'page-budget') {
+                console.log("Mock load budget data");
+            } else if (pageId === 'page-hr') {
+                console.log("Mock load hr data");
+            } else if (pageId === 'page-student-council') {
+                console.log("Mock load student council data");
+            } else if (pageId === 'page-setting') {
+                console.log("Mock load settings data");
+            } else if (pageId === 'page-document') {
+                if (typeof loadDocuments === 'function') {
+                    loadDocuments();
+                }
+            }
+        }
+
+        function showLoading(text) {
+            const el = document.getElementById('loading-overlay');
+            if (el) {
+                el.classList.remove('hidden');
+                el.classList.add('flex');
+            }
+            if (text && document.getElementById('loading-text')) document.getElementById('loading-text').innerText = text;
+        }
+
+        function hideLoading() {
+            const el = document.getElementById('loading-overlay');
+            if (el) {
+                el.classList.add('hidden');
+                el.classList.remove('flex');
+            }
+        }
+    </script>
+</body>
+
+</html>
