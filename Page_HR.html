@@ -268,6 +268,37 @@
             </button>
         </div>
     </div>
+
+    <!-- Staffing Analysis Table -->
+    <div class="mt-8 bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden animate-slide-up"
+        style="animation-delay: 0.1s;">
+        <div class="p-5 px-6 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
+            <div>
+                <h3 class="font-bold text-slate-800">ข้อมูลอัตรากำลังครู (ตามเกณฑ์ ก.ค.ศ.)</h3>
+                <p class="text-xs text-slate-500 mt-1">อัปเดตข้อมูลอัตรากำลังล่าสุดประจำปีการศึกษา</p>
+            </div>
+            <button
+                class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl text-xs font-bold transition shadow-sm flex items-center gap-2">
+                <i class="fa-solid fa-plus"></i> สำรวจข้อมูลเพิ่ม
+            </button>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse min-w-[600px]">
+                <thead>
+                    <tr class="bg-slate-50 text-slate-500 text-[10px] uppercase tracking-wider">
+                        <th class="p-4 font-bold border-b border-slate-100">กลุ่มสาระฯ / วิชาเอก</th>
+                        <th class="p-4 font-bold border-b border-slate-100 text-center">เกณฑ์ที่ควรมี</th>
+                        <th class="p-4 font-bold border-b border-slate-100 text-center">มีอยู่จริง</th>
+                        <th class="p-4 font-bold border-b border-slate-100 text-center">ขาด / เกิน</th>
+                        <th class="p-4 font-bold border-b border-slate-100 text-center">สถานะ</th>
+                    </tr>
+                </thead>
+                <tbody id="hr-staffing-table-body">
+                    <!-- JS Injected -->
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
 
 <!-- Development View -->
@@ -312,6 +343,35 @@
             <button class="text-sm font-bold text-teal-600 hover:text-teal-700 flex items-center gap-2">
                 บันทึกการอบรม <i class="fa-solid fa-arrow-right"></i>
             </button>
+        </div>
+    </div>
+
+    <!-- Development Content -->
+    <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6 animate-slide-up" style="animation-delay: 0.1s;">
+        <!-- วPA Tracking -->
+        <div class="bg-white rounded-3xl shadow-sm border border-slate-100 p-6 flex flex-col h-full">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="font-bold text-slate-800">สถานะการส่ง วPA</h3>
+                <button
+                    class="text-[10px] bg-slate-50 text-slate-500 px-3 py-1.5 rounded-lg font-bold hover:bg-slate-100 transition">ปีการศึกษา
+                    2566 <i class="fa-solid fa-chevron-down ml-1"></i></button>
+            </div>
+            <div id="hr-vpa-list" class="space-y-3 flex-1 overflow-y-auto pr-2">
+                <!-- JS Injected -->
+            </div>
+        </div>
+
+        <!-- Training Log -->
+        <div class="bg-white rounded-3xl shadow-sm border border-slate-100 p-6 flex flex-col h-full">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="font-bold text-slate-800">ประวัติการอบรมล่าสุด</h3>
+                <button
+                    class="text-xs bg-emerald-50 text-emerald-600 px-3 py-1.5 rounded-lg font-bold hover:bg-emerald-100 hover:text-emerald-700 transition"><i
+                        class="fa-solid fa-plus mr-1"></i> บันทึกอบรม</button>
+            </div>
+            <div id="hr-training-list" class="space-y-3 flex-1 overflow-y-auto pr-2">
+                <!-- JS Injected -->
+            </div>
         </div>
     </div>
 </div>
@@ -361,6 +421,39 @@
             </button>
         </div>
     </div>
+
+    <!-- Performance Action -->
+    <div class="mt-8 bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden animate-slide-up"
+        style="animation-delay: 0.1s;">
+        <div
+            class="p-5 px-6 border-b border-slate-100 flex justify-between items-center bg-slate-50/50 flex-col sm:flex-row gap-4 sm:gap-0">
+            <div>
+                <h3 class="font-bold text-slate-800">รอบการประเมิน: ครั้งที่ 1 (1 ต.ค. 66 - 31 มี.ค. 67)</h3>
+                <p class="text-xs text-slate-500 mt-1">สรุปผลการประเมินเพื่อประกอบการเลื่อนเงินเดือน</p>
+            </div>
+            <button
+                class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-xl text-sm font-bold transition shadow-[0_4px_14px_0_rgb(249,115,22,0.39)] flex items-center gap-2 w-full sm:w-auto justify-center">
+                <i class="fa-solid fa-calculator"></i> ประมวลผลเงินเดือน
+            </button>
+        </div>
+
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse min-w-[700px]">
+                <thead>
+                    <tr class="bg-slate-50 text-slate-500 text-[10px] uppercase tracking-wider">
+                        <th class="p-4 font-bold border-b border-slate-100">ชื่อ-สกุล</th>
+                        <th class="p-4 font-bold border-b border-slate-100">ตำแหน่ง / วิทยฐานะ</th>
+                        <th class="p-4 font-bold border-b border-slate-100 text-center">คะแนนประเมิน</th>
+                        <th class="p-4 font-bold border-b border-slate-100 text-center">ระดับ</th>
+                        <th class="p-4 font-bold border-b border-slate-100 text-center">จัดการ</th>
+                    </tr>
+                </thead>
+                <tbody id="hr-performance-table-body">
+                    <!-- JS injected -->
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
 
 <!-- Discipline View -->
@@ -406,6 +499,59 @@
             <button class="text-sm font-bold text-fuchsia-600 hover:text-fuchsia-700 flex items-center gap-2">
                 รายงานสถิติ <i class="fa-solid fa-arrow-right"></i>
             </button>
+        </div>
+    </div>
+
+    <!-- Discipline Action -->
+    <div class="mt-8 grid grid-cols-1 lg:grid-cols-3 gap-6 animate-slide-up" style="animation-delay: 0.1s;">
+        <!-- Check In Area -->
+        <div
+            class="bg-white rounded-[2rem] shadow-sm border border-slate-100 p-8 flex flex-col items-center justify-center text-center relative overflow-hidden">
+            <div class="absolute top-0 inset-x-0 h-2 bg-gradient-to-r from-purple-500 to-fuchsia-500"></div>
+            <div class="w-24 h-24 rounded-full border-4 border-slate-50 p-1 mb-4 relative shadow-sm">
+                <img src="https://ui-avatars.com/api/?name=Admin&background=f1f5f9&color=64748b"
+                    class="w-full h-full rounded-full object-cover" id="hr-discipline-user-avatar">
+                <div
+                    class="absolute bottom-0 right-0 w-6 h-6 bg-emerald-500 border-2 border-white rounded-full shadow-sm">
+                </div>
+            </div>
+            <h3 class="font-bold text-slate-800 text-lg mb-1" id="hr-discipline-user-name">กำลังโหลดข้อมูล...</h3>
+            <div class="bg-slate-50 px-3 py-1 rounded-lg border border-slate-100 mb-6">
+                <p class="text-[0.65rem] text-slate-500 font-medium tracking-widest uppercase mb-0.5">เวลาปัจจุบัน</p>
+                <p class="text-2xl font-black text-slate-700 tracking-wider font-mono" id="hr-clock-time">00:00:00</p>
+            </div>
+
+            <button onclick="hrSimulateClockIn()" id="hr-clock-btn"
+                class="w-full bg-purple-600 hover:bg-purple-700 text-white py-3.5 rounded-xl font-bold transition shadow-[0_4px_14px_0_rgb(147,51,234,0.39)] flex items-center justify-center gap-2 text-sm z-10 active:scale-95 duration-200">
+                <i class="fa-solid fa-fingerprint text-lg"></i> บันทึกเวลาเข้างาน
+            </button>
+        </div>
+
+        <!-- Attendance Log -->
+        <div
+            class="lg:col-span-2 bg-white rounded-[2rem] shadow-sm border border-slate-100 overflow-hidden flex flex-col">
+            <div class="p-5 px-6 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
+                <h3 class="font-bold text-slate-800 flex items-center gap-2"><i
+                        class="fa-regular fa-clock text-fuchsia-500"></i> ประวัติการลงเวลา (วันนี้)</h3>
+                <span
+                    class="text-[10px] bg-white border border-slate-200 text-slate-500 px-3 py-1 rounded-full font-bold shadow-sm"
+                    id="hr-today-date">...</span>
+            </div>
+            <div class="overflow-x-auto overflow-y-auto flex-1 max-h-[300px]">
+                <table class="w-full text-left border-collapse min-w-[500px]">
+                    <thead class="sticky top-0 z-10">
+                        <tr class="bg-slate-50 text-slate-500 text-[10px] uppercase tracking-wider shadow-sm">
+                            <th class="p-4 font-bold border-b border-slate-100">ชื่อ-สกุล</th>
+                            <th class="p-4 font-bold border-b border-slate-100 text-center">เวลาเข้า</th>
+                            <th class="p-4 font-bold border-b border-slate-100 text-center">เวลาออก</th>
+                            <th class="p-4 font-bold border-b border-slate-100 text-center">สถานะ</th>
+                        </tr>
+                    </thead>
+                    <tbody id="hr-attendance-table-body">
+                        <!-- JS injected -->
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>

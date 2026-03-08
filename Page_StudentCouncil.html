@@ -194,7 +194,7 @@
 </div> <!-- End student-council-dashboard-view -->
 
 <!-- ระบบเวรเช้า / จัดการสภา View -->
-<div id="student-council-assignment-view" class="hidden animate-slide-up">
+<div id="student-council-morning_duty-view" class="hidden animate-slide-up">
     <!-- Header with back button -->
     <div class="mb-6 flex items-center justify-between">
         <div class="flex items-center gap-4">
@@ -269,4 +269,182 @@
             </div>
         </div>
     </div>
-</div>
+
+    <!-- ========================================== -->
+    <!-- SCAN VIEW (Same as morning duty for now)   -->
+    <!-- ========================================== -->
+    <div id="student-council-scan-view" class="hidden animate-slide-up">
+        <!-- Header with back button -->
+        <div class="mb-6 flex items-center justify-between">
+            <div class="flex items-center gap-4">
+                <button onclick="closeStudentCouncilSubsystem('scan')"
+                    class="w-10 h-10 bg-white rounded-full flex items-center justify-center text-slate-500 hover:text-orange-600 hover:bg-orange-50 shadow-sm transition border border-slate-100">
+                    <i class="fa-solid fa-arrow-left"></i>
+                </button>
+                <h2 class="text-2xl font-bold text-slate-800 flex items-center gap-3">
+                    <div
+                        class="w-10 h-10 bg-orange-100 rounded-xl flex items-center justify-center text-orange-600 shadow-sm">
+                        <i class="fa-solid fa-qrcode"></i>
+                    </div>
+                    สแกนบาร์โค้ดมาสาย
+                </h2>
+            </div>
+        </div>
+
+        <div class="bg-white p-8 rounded-[2rem] shadow-sm border border-slate-100 text-center max-w-2xl mx-auto">
+            <div
+                class="w-32 h-32 mx-auto bg-slate-50 rounded-full flex items-center justify-center border-4 border-slate-100 shadow-inner mb-6 relative overflow-hidden">
+                <div class="absolute inset-0 bg-orange-500/10 animate-pulse"></div>
+                <i class="fa-solid fa-barcode text-5xl text-slate-700 relative z-10"></i>
+                <div class="absolute w-full h-1 bg-orange-500 top-1/2 left-0 animate-bounce cursor-none"></div>
+            </div>
+            <h3 class="text-2xl font-black text-slate-800 mb-2">รอรับข้อมูลการสแกน</h3>
+            <p class="text-slate-500 mb-8">กรุณานำบัตรนักเรียนมาสแกนที่เครื่องอ่านบาร์โค้ด</p>
+
+            <input type="text"
+                class="w-full p-4 text-center text-3xl tracking-widest bg-slate-50 border border-slate-200 rounded-xl text-slate-800 font-bold outline-none ring-2 ring-orange-500/30"
+                placeholder="|| ||| || |||" autofocus>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- ASSEMBLY VIEW (เช็คแถวหน้าเสาธง)            -->
+    <!-- ========================================== -->
+    <div id="student-council-assembly-view" class="hidden animate-slide-up">
+        <div class="mb-6 flex items-center justify-between">
+            <div class="flex items-center gap-4">
+                <button onclick="closeStudentCouncilSubsystem('assembly')"
+                    class="w-10 h-10 bg-white rounded-full flex items-center justify-center text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 shadow-sm transition border border-slate-100">
+                    <i class="fa-solid fa-arrow-left"></i>
+                </button>
+                <h2 class="text-2xl font-bold text-slate-800 flex items-center gap-3">
+                    <div
+                        class="w-10 h-10 bg-indigo-100 rounded-xl flex items-center justify-center text-indigo-600 shadow-sm">
+                        <i class="fa-solid fa-flag"></i>
+                    </div>
+                    บันทึกยอดหน้าเสาธง
+                </h2>
+            </div>
+            <div class="text-right">
+                <p class="text-xs text-slate-500 font-bold mb-1">วันที่ประเมิน</p>
+                <input type="date" id="assemblyDate"
+                    class="text-sm font-bold text-slate-700 bg-white border border-slate-200 rounded-lg px-3 py-1.5 outline-none">
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+            <div class="lg:col-span-1 space-y-4">
+                <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100">
+                    <h3 class="font-bold text-slate-800 mb-3"><i class="fa-solid fa-filter text-indigo-500 mr-2"></i>
+                        ตัวกรองระดับชั้น</h3>
+                    <select
+                        class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-lg outline-none text-sm font-medium mb-3">
+                        <option>มัธยมศึกษาปีที่ 1</option>
+                        <option>มัธยมศึกษาปีที่ 2</option>
+                        <option>มัธยมศึกษาปีที่ 3</option>
+                        <option>มัธยมศึกษาปีที่ 4</option>
+                        <option>มัธยมศึกษาปีที่ 5</option>
+                        <option>มัธยมศึกษาปีที่ 6</option>
+                    </select>
+                    <button
+                        class="w-full py-2 bg-indigo-600 text-white rounded-lg font-bold hover:bg-indigo-700 transition text-sm shadow-[0_4px_14px_0_rgb(79,70,229,0.39)]">แสดงข้อมูล</button>
+                </div>
+
+                <div
+                    class="bg-gradient-to-br from-indigo-500 to-purple-600 p-5 rounded-2xl shadow-sm text-white relative overflow-hidden group">
+                    <div
+                        class="absolute -right-4 -bottom-4 w-24 h-24 bg-white/10 rounded-full group-hover:scale-150 transition-transform duration-500">
+                    </div>
+                    <h3 class="font-bold mb-1 relative z-10">สรุปยอดรวม ม.1</h3>
+                    <p class="text-xs text-white/80 mb-4 relative z-10">ประจำวันที่ <span
+                            id="displayAssemblyDate">...</span></p>
+                    <div class="grid grid-cols-2 gap-3 relative z-10">
+                        <div class="bg-white/20 p-2 rounded-lg text-center backdrop-blur-sm">
+                            <p class="text-[10px] uppercase font-bold text-white/90">มาทั้งหมด</p>
+                            <p class="text-xl font-black">215</p>
+                        </div>
+                        <div class="bg-white/20 p-2 rounded-lg text-center backdrop-blur-sm">
+                            <p class="text-[10px] uppercase font-bold text-white/90">ขาดแถว</p>
+                            <p class="text-xl font-black">12</p>
+                        </div>
+                    </div>
+                    <button onclick="submitAssemblyBatch()"
+                        class="w-full mt-4 py-2 bg-white text-indigo-600 rounded-lg font-bold hover:bg-slate-50 transition text-sm shadow-sm relative z-10">ส่งรายงานยอดประจำวัน</button>
+                </div>
+            </div>
+
+            <div class="lg:col-span-3">
+                <div class="bg-white rounded-[2rem] shadow-sm border border-slate-100 overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="bg-slate-50/50 border-b border-slate-100">
+                                    <th class="p-4 px-6 text-xs font-bold text-slate-500 w-1/4">ห้องเรียน</th>
+                                    <th class="p-4 text-xs font-bold text-slate-500 text-center">ยอดเต็ม</th>
+                                    <th class="p-4 text-xs font-bold text-slate-500 text-center">มาเรียน</th>
+                                    <th class="p-4 text-xs font-bold text-rose-500 text-center">ขาด/ลา/มาสาย</th>
+                                    <th class="p-4 px-6 text-xs font-bold text-slate-500 text-center">สถานะบันทึก</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-50" id="assembly-table-body">
+                                <!-- JS Will Render Here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- CLEANING VIEW (ตรวจเขตรับผิดชอบ)            -->
+    <!-- ========================================== -->
+    <div id="student-council-cleaning-view" class="hidden animate-slide-up">
+        <div class="mb-6 flex items-center justify-between">
+            <div class="flex items-center gap-4">
+                <button onclick="closeStudentCouncilSubsystem('cleaning')"
+                    class="w-10 h-10 bg-white rounded-full flex items-center justify-center text-slate-500 hover:text-teal-600 hover:bg-teal-50 shadow-sm transition border border-slate-100">
+                    <i class="fa-solid fa-arrow-left"></i>
+                </button>
+                <h2 class="text-2xl font-bold text-slate-800 flex items-center gap-3">
+                    <div
+                        class="w-10 h-10 bg-teal-100 rounded-xl flex items-center justify-center text-teal-600 shadow-sm">
+                        <i class="fa-solid fa-broom"></i>
+                    </div>
+                    ประเมินเขตรับผิดชอบ
+                </h2>
+            </div>
+            <div class="flex gap-2">
+                <button onclick="openNewCleaningEvalModal()"
+                    class="bg-teal-600 text-white font-bold py-2 px-4 rounded-xl shadow-[0_4px_14px_0_rgb(13,148,136,0.39)] hover:bg-teal-700 transition text-sm flex items-center gap-2">
+                    <i class="fa-solid fa-plus"></i> เพิ่มการประเมิน
+                </button>
+            </div>
+        </div>
+
+        <!-- Quick Filter -->
+        <div
+            class="bg-white p-2 rounded-xl shadow-sm border border-slate-100 mb-6 flex overflow-x-auto hide-scroll gap-2">
+            <button class="px-5 py-2 rounded-lg text-sm font-bold bg-teal-50 text-teal-700 whitespace-nowrap">ทั้งหมด
+                (12)</button>
+            <button
+                class="px-5 py-2 rounded-lg text-sm font-bold text-slate-500 hover:bg-slate-50 transition whitespace-nowrap">อาคาร
+                1 (3)</button>
+            <button
+                class="px-5 py-2 rounded-lg text-sm font-bold text-slate-500 hover:bg-slate-50 transition whitespace-nowrap">อาคาร
+                2 (4)</button>
+            <button
+                class="px-5 py-2 rounded-lg text-sm font-bold text-slate-500 hover:bg-slate-50 transition whitespace-nowrap">ลานอเนกประสงค์
+                (2)</button>
+            <button
+                class="px-5 py-2 rounded-lg text-sm font-bold text-slate-500 hover:bg-slate-50 transition whitespace-nowrap">โรงอาหาร
+                (1)</button>
+            <button
+                class="px-5 py-2 rounded-lg text-sm font-bold text-slate-500 hover:bg-slate-50 transition whitespace-nowrap">ห้องน้ำนักเรียน
+                (2)</button>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" id="cleaning-grid">
+            <!-- JS Will Render Here -->
+        </div>
+    </div>

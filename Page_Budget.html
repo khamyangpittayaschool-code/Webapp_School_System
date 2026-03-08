@@ -222,34 +222,71 @@
             </div>
         </div>
         <div class="flex gap-2">
-            <button
+            <button onclick="requestBudget()"
                 class="px-4 py-2 bg-blue-600 text-white rounded-xl text-sm font-bold shadow-[0_4px_14px_0_rgb(37,99,235,0.39)] hover:bg-blue-700 transition flex items-center gap-2">
                 <i class="fa-solid fa-plus"></i> เสนอของบประมาณ
             </button>
         </div>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div class="bg-white p-6 rounded-[2rem] shadow-sm border border-slate-100 hover:shadow-md transition">
-            <div class="w-14 h-14 bg-sky-50 text-sky-500 rounded-2xl flex items-center justify-center text-2xl mb-4">
-                <i class="fa-solid fa-clipboard-list"></i>
-            </div>
-            <h3 class="text-xl font-bold text-slate-800 mb-2">จัดทำแผนปฏิบัติการประจำปี</h3>
-            <p class="text-sm text-slate-500">วางแผนการดำเนินงานและกำหนดงบประมาณสำหรับโครงการต่างๆ ในรอบปีการศึกษา</p>
-            <button class="mt-4 text-sm font-bold text-sky-600 hover:text-sky-700 flex items-center gap-2">
-                จัดการแผน <i class="fa-solid fa-arrow-right"></i>
-            </button>
+    <div class="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden mb-6">
+        <div class="border-b border-slate-100 flex items-center justify-between p-4 px-6 bg-slate-50/50">
+            <h3 class="font-bold text-slate-800"><i class="fa-solid fa-clipboard-list text-blue-500 mr-2"></i>
+                โครงการ/กิจกรรม (แผนปฏิบัติการประจำปี)</h3>
+            <button
+                class="text-xs bg-white border border-slate-200 font-bold px-3 py-1.5 rounded-lg text-slate-600 hover:bg-slate-50 transition"><i
+                    class="fa-solid fa-filter mr-1"></i> กรอง</button>
         </div>
-        <div class="bg-white p-6 rounded-[2rem] shadow-sm border border-slate-100 hover:shadow-md transition">
-            <div
-                class="w-14 h-14 bg-indigo-50 text-indigo-500 rounded-2xl flex items-center justify-center text-2xl mb-4">
-                <i class="fa-solid fa-file-invoice-dollar"></i>
+        <div class="p-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100 flex items-center gap-4">
+                    <div
+                        class="w-12 h-12 rounded-xl bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-lg">
+                        12
+                    </div>
+                    <div>
+                        <p class="text-xs text-slate-500 font-medium mb-0.5">โครงการทั้งหมด</p>
+                        <p class="font-bold text-slate-800">ปีการศึกษา 2567</p>
+                    </div>
+                </div>
+                <div class="p-4 rounded-2xl bg-emerald-50 border border-emerald-100 flex items-center gap-4">
+                    <div
+                        class="w-12 h-12 rounded-xl bg-emerald-100 flex items-center justify-center text-emerald-600 font-bold text-lg">
+                        8
+                    </div>
+                    <div>
+                        <p class="text-xs text-emerald-600/80 font-medium mb-0.5">อนุมัติแล้ว</p>
+                        <p class="font-bold text-emerald-700">850,000 บาท</p>
+                    </div>
+                </div>
+                <div class="p-4 rounded-2xl bg-amber-50 border border-amber-100 flex items-center gap-4">
+                    <div
+                        class="w-12 h-12 rounded-xl bg-amber-100 flex items-center justify-center text-amber-600 font-bold text-lg">
+                        4
+                    </div>
+                    <div>
+                        <p class="text-xs text-amber-600/80 font-medium mb-0.5">รอพิจารณา</p>
+                        <p class="font-bold text-amber-700">120,500 บาท</p>
+                    </div>
+                </div>
             </div>
-            <h3 class="text-xl font-bold text-slate-800 mb-2">การเสนอของบประมาณ</h3>
-            <p class="text-sm text-slate-500">วิเคราะห์ความต้องการและทำเอกสารขอเบิกงบจากหน่วยงานต้นสังกัด (สพฐ.)</p>
-            <button class="mt-4 text-sm font-bold text-indigo-600 hover:text-indigo-700 flex items-center gap-2">
-                ดูคำขอ <i class="fa-solid fa-arrow-right"></i>
-            </button>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-sm whitespace-nowrap">
+                    <thead class="bg-slate-50 text-slate-500 text-xs uppercase border-b border-t border-slate-100">
+                        <tr>
+                            <th class="px-4 py-3 font-bold tracking-wider">รหัสโครงการ</th>
+                            <th class="px-4 py-3 font-bold tracking-wider">ชื่อโครงการ / กิจกรรม</th>
+                            <th class="px-4 py-3 font-bold tracking-wider">ผู้รับผิดชอบ</th>
+                            <th class="px-4 py-3 font-bold tracking-wider text-right">งบประมาณที่ขอ</th>
+                            <th class="px-4 py-3 font-bold tracking-wider text-center">สถานะ</th>
+                            <th class="px-4 py-3 font-bold tracking-wider text-center">จัดการ</th>
+                        </tr>
+                    </thead>
+                    <tbody id="budget-planning-tbody" class="divide-y divide-slate-100">
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>
@@ -276,28 +313,73 @@
         </div>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div class="bg-white p-6 rounded-[2rem] shadow-sm border border-slate-100 hover:shadow-md transition">
-            <div
-                class="w-14 h-14 bg-emerald-50 text-emerald-500 rounded-2xl flex items-center justify-center text-2xl mb-4">
-                <i class="fa-solid fa-money-bill-transfer"></i>
+    <!-- Ledger & Accounts -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+        <div class="lg:col-span-2 bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden">
+            <div class="border-b border-slate-100 flex items-center justify-between p-4 px-6 bg-slate-50/50">
+                <h3 class="font-bold text-slate-800"><i
+                        class="fa-solid fa-money-bill-transfer text-emerald-500 mr-2"></i> ทะเบียนคุมเงินรับ-จ่าย</h3>
+                <div class="flex gap-2">
+                    <button onclick="addFinanceRecord()"
+                        class="text-xs bg-emerald-500 text-white font-bold px-3 py-1.5 rounded-lg hover:bg-emerald-600 transition"><i
+                            class="fa-solid fa-plus mr-1"></i> รับเงิน</button>
+                    <button onclick="addFinanceRecord()"
+                        class="text-xs bg-rose-500 text-white font-bold px-3 py-1.5 rounded-lg hover:bg-rose-600 transition"><i
+                            class="fa-solid fa-minus mr-1"></i> จ่ายเงิน</button>
+                </div>
             </div>
-            <h3 class="text-xl font-bold text-slate-800 mb-2">การบริหารการเงิน</h3>
-            <p class="text-sm text-slate-500">จัดการรับเงิน เก็บรักษาเงิน และการเบิกจ่ายเงินงบประมาณและเงินนอกงบประมาณ
-            </p>
-            <button class="mt-4 text-sm font-bold text-emerald-600 hover:text-emerald-700 flex items-center gap-2">
-                ระบบสลิป <i class="fa-solid fa-arrow-right"></i>
-            </button>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-sm whitespace-nowrap">
+                    <thead class="bg-white text-slate-400 text-xs uppercase border-b border-slate-100">
+                        <tr>
+                            <th class="px-4 py-3 font-bold tracking-wider">วันที่</th>
+                            <th class="px-4 py-3 font-bold tracking-wider">รายการ</th>
+                            <th class="px-4 py-3 font-bold tracking-wider text-right">รับ (บาท)</th>
+                            <th class="px-4 py-3 font-bold tracking-wider text-right">จ่าย (บาท)</th>
+                            <th class="px-4 py-3 font-bold tracking-wider text-right">คงเหลือ</th>
+                        </tr>
+                    </thead>
+                    <tbody id="budget-finance-tbody" class="divide-y divide-slate-50">
+                    </tbody>
+                </table>
+            </div>
         </div>
-        <div class="bg-white p-6 rounded-[2rem] shadow-sm border border-slate-100 hover:shadow-md transition">
-            <div class="w-14 h-14 bg-teal-50 text-teal-500 rounded-2xl flex items-center justify-center text-2xl mb-4">
-                <i class="fa-solid fa-book"></i>
+
+        <div class="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden flex flex-col">
+            <div class="border-b border-slate-100 flex items-center justify-between p-4 px-6 bg-slate-50/50">
+                <h3 class="font-bold text-slate-800"><i class="fa-solid fa-chart-pie text-teal-500 mr-2"></i>
+                    สรุปบัญชีแยกประเภท</h3>
             </div>
-            <h3 class="text-xl font-bold text-slate-800 mb-2">การจัดทำบัญชี</h3>
-            <p class="text-sm text-slate-500">บันทึกรายรับ-รายจ่ายให้ถูกต้องตามระเบียบ และจัดทำรายงานทางการเงิน</p>
-            <button class="mt-4 text-sm font-bold text-teal-600 hover:text-teal-700 flex items-center gap-2">
-                ดูสมุดบัญชี <i class="fa-solid fa-arrow-right"></i>
-            </button>
+            <div class="p-6 flex-1 flex flex-col gap-4">
+                <div class="bg-slate-50 p-4 rounded-2xl border border-slate-100 flex justify-between items-center">
+                    <div>
+                        <p class="text-xs text-slate-500 font-medium mb-1">เงินรายหัว (อุดหนุน)</p>
+                        <p class="font-bold text-slate-800">850,000.00</p>
+                    </div>
+                    <div class="w-10 h-10 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center">
+                        <i class="fa-solid fa-graduation-cap"></i>
+                    </div>
+                </div>
+                <div class="bg-slate-50 p-4 rounded-2xl border border-slate-100 flex justify-between items-center">
+                    <div>
+                        <p class="text-xs text-slate-500 font-medium mb-1">เงินอาหารกลางวัน</p>
+                        <p class="font-bold text-slate-800">320,500.00</p>
+                    </div>
+                    <div class="w-10 h-10 rounded-full bg-orange-100 text-orange-600 flex items-center justify-center">
+                        <i class="fa-solid fa-utensils"></i>
+                    </div>
+                </div>
+                <div class="bg-slate-50 p-4 rounded-2xl border border-slate-100 flex justify-between items-center">
+                    <div>
+                        <p class="text-xs text-slate-500 font-medium mb-1">เงินรายได้สถานศึกษา</p>
+                        <p class="font-bold text-slate-800">279,700.00</p>
+                    </div>
+                    <div
+                        class="w-10 h-10 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center">
+                        <i class="fa-solid fa-shop"></i>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -324,38 +406,41 @@
         </div>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div class="bg-white p-6 rounded-[2rem] shadow-sm border border-slate-100 hover:shadow-md transition">
-            <div
-                class="w-14 h-14 bg-amber-50 text-amber-500 rounded-2xl flex items-center justify-center text-2xl mb-4">
-                <i class="fa-solid fa-cart-shopping"></i>
-            </div>
-            <h3 class="text-xl font-bold text-slate-800 mb-2">การจัดซื้อจัดจ้าง</h3>
-            <p class="text-sm text-slate-500 mb-4">ดำเนินการซื้ออุปกรณ์หรือจ้างเหมาบริการผ่านระบบ e-GP</p>
-            <button class="text-sm font-bold text-amber-600 hover:text-amber-700 flex items-center gap-2">
-                สร้างรายการ <i class="fa-solid fa-arrow-right"></i>
-            </button>
+    <!-- Tabs for Procurement -->
+    <div class="border-b border-slate-200 mb-6 flex overflow-x-auto hide-scrollbar">
+        <button class="px-6 py-3 font-bold text-amber-600 border-b-2 border-amber-500 whitespace-nowrap"><i
+                class="fa-solid fa-cart-shopping mr-2"></i> จัดซื้อจัดจ้าง (e-GP)</button>
+        <button
+            class="px-6 py-3 font-bold text-slate-400 hover:text-slate-600 border-b-2 border-transparent hover:border-slate-300 transition whitespace-nowrap"><i
+                class="fa-solid fa-list-ol mr-2"></i> ทะเบียนคุมครุภัณฑ์</button>
+        <button
+            class="px-6 py-3 font-bold text-slate-400 hover:text-slate-600 border-b-2 border-transparent hover:border-slate-300 transition whitespace-nowrap"><i
+                class="fa-solid fa-trash-can-arrow-up mr-2"></i> จำหน่ายพัสดุชำรุด</button>
+    </div>
+
+    <!-- Procurement e-GP Content -->
+    <div class="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden mb-6">
+        <div class="border-b border-slate-100 flex items-center justify-between p-4 px-6 bg-slate-50/50">
+            <h3 class="font-bold text-slate-800">รายการจัดซื้อจัดจ้าง</h3>
+            <button onclick="addProcurement()"
+                class="text-xs bg-amber-500 text-white font-bold px-3 py-1.5 rounded-lg hover:bg-amber-600 transition"><i
+                    class="fa-solid fa-plus mr-1"></i> สร้างรายการใหม่</button>
         </div>
-        <div class="bg-white p-6 rounded-[2rem] shadow-sm border border-slate-100 hover:shadow-md transition">
-            <div
-                class="w-14 h-14 bg-orange-50 text-orange-500 rounded-2xl flex items-center justify-center text-2xl mb-4">
-                <i class="fa-solid fa-list-ol"></i>
-            </div>
-            <h3 class="text-xl font-bold text-slate-800 mb-2">ทะเบียนคุมพัสดุ</h3>
-            <p class="text-sm text-slate-500 mb-4">ลงทะเบียนครุภัณฑ์และตรวจสอบพัสดุประจำปี</p>
-            <button class="text-sm font-bold text-orange-600 hover:text-orange-700 flex items-center gap-2">
-                ทะเบียนพัสดุ <i class="fa-solid fa-arrow-right"></i>
-            </button>
-        </div>
-        <div class="bg-white p-6 rounded-[2rem] shadow-sm border border-slate-100 hover:shadow-md transition">
-            <div class="w-14 h-14 bg-rose-50 text-rose-500 rounded-2xl flex items-center justify-center text-2xl mb-4">
-                <i class="fa-solid fa-trash-can-arrow-up"></i>
-            </div>
-            <h3 class="text-xl font-bold text-slate-800 mb-2">การจำหน่ายพัสดุ</h3>
-            <p class="text-sm text-slate-500 mb-4">ดำเนินการจำหน่ายเมื่ออุปกรณ์ชำรุดหรือเสื่อมสภาพจนใช้งานไม่ได้</p>
-            <button class="text-sm font-bold text-rose-600 hover:text-rose-700 flex items-center gap-2">
-                จำหน่าย <i class="fa-solid fa-arrow-right"></i>
-            </button>
+        <div class="overflow-x-auto">
+            <table class="w-full text-left text-sm whitespace-nowrap">
+                <thead class="bg-white text-slate-400 text-xs uppercase border-b border-slate-100">
+                    <tr>
+                        <th class="px-6 py-4 font-bold tracking-wider">เลขที่จัดซื้อ</th>
+                        <th class="px-6 py-4 font-bold tracking-wider">รายการ</th>
+                        <th class="px-6 py-4 font-bold tracking-wider">ผู้เสนอ/บริษัท</th>
+                        <th class="px-6 py-4 font-bold tracking-wider text-right">วงเงิน (บาท)</th>
+                        <th class="px-6 py-4 font-bold tracking-wider text-center">สถานะ</th>
+                        <th class="px-6 py-4 font-bold tracking-wider text-center">จัดการ</th>
+                    </tr>
+                </thead>
+                <tbody id="budget-procurement-tbody" class="divide-y divide-slate-50">
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
@@ -382,29 +467,78 @@
         </div>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div class="bg-white p-6 rounded-[2rem] shadow-sm border border-slate-100 hover:shadow-md transition">
-            <div
-                class="w-14 h-14 bg-purple-50 text-purple-500 rounded-2xl flex items-center justify-center text-2xl mb-4">
-                <i class="fa-solid fa-file-shield"></i>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <!-- Internal Audit -->
+        <div class="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden">
+            <div class="border-b border-slate-100 p-5 px-6 bg-slate-50/50 flex justify-between items-center">
+                <h3 class="font-bold text-slate-800"><i class="fa-solid fa-file-shield text-purple-500 mr-2"></i>
+                    รายงานการตรวจสอบภายใน</h3>
+                <button onclick="openAuditReport()"
+                    class="text-[10px] bg-white border border-slate-200 px-2 py-1 rounded font-bold text-slate-600">ทั้งหมด</button>
             </div>
-            <h3 class="text-xl font-bold text-slate-800 mb-2">การตรวจสอบภายใน</h3>
-            <p class="text-sm text-slate-500 mb-4">ติดตามกำกับดูแลการใช้เงินให้เป็นไปตามแผนและถูกต้องตามระเบียบ</p>
-            <button class="text-sm font-bold text-purple-600 hover:text-purple-700 flex items-center gap-2">
-                รายงานตรวจสอบ <i class="fa-solid fa-arrow-right"></i>
-            </button>
+            <div class="p-4 space-y-3">
+                <div
+                    class="p-4 rounded-xl border border-slate-100 hover:border-purple-200 hover:bg-purple-50/30 transition cursor-pointer flex justify-between items-center group">
+                    <div class="flex items-start gap-3">
+                        <div
+                            class="w-8 h-8 rounded-lg bg-green-100 text-green-600 flex items-center justify-center shrink-0">
+                            <i class="fa-solid fa-check"></i>
+                        </div>
+                        <div>
+                            <p class="font-bold text-slate-800 text-sm group-hover:text-purple-700 transition">
+                                รายงานการตรวจสอบการเงิน ไตรมาส 1/2567</p>
+                            <p class="text-xs text-slate-500">10 ก.พ. 2567 • ตรวจสอบแล้ว ถูกต้องตามระเบียบ</p>
+                        </div>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-slate-300"></i>
+                </div>
+                <div
+                    class="p-4 rounded-xl border border-slate-100 hover:border-purple-200 hover:bg-purple-50/30 transition cursor-pointer flex justify-between items-center group">
+                    <div class="flex items-start gap-3">
+                        <div
+                            class="w-8 h-8 rounded-lg bg-amber-100 text-amber-600 flex items-center justify-center shrink-0">
+                            <i class="fa-solid fa-exclamation"></i>
+                        </div>
+                        <div>
+                            <p class="font-bold text-slate-800 text-sm group-hover:text-purple-700 transition">
+                                รายงานการลงพื้นที่ตรวจนับพัสดุ</p>
+                            <p class="text-xs text-slate-500">25 ม.ค. 2567 • พบข้อสังเกต 2 รายการ</p>
+                        </div>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-slate-300"></i>
+                </div>
+            </div>
         </div>
-        <div class="bg-white p-6 rounded-[2rem] shadow-sm border border-slate-100 hover:shadow-md transition">
-            <div
-                class="w-14 h-14 bg-fuchsia-50 text-fuchsia-500 rounded-2xl flex items-center justify-center text-2xl mb-4">
-                <i class="fa-solid fa-hand-holding-heart"></i>
+
+        <!-- E-Donation -->
+        <div class="bg-white rounded-3xl shadow-sm border border-slate-100 overflow-hidden">
+            <div class="border-b border-slate-100 p-5 px-6 bg-slate-50/50 flex justify-between items-center">
+                <h3 class="font-bold text-slate-800"><i
+                        class="fa-solid fa-hand-holding-heart text-fuchsia-500 mr-2"></i> ระบบรับบริจาค (E-Donation)
+                </h3>
+                <button
+                    class="text-xs bg-fuchsia-500 text-white font-bold px-3 py-1.5 rounded-lg hover:bg-fuchsia-600 transition">ออกใบเสร็จ</button>
             </div>
-            <h3 class="text-xl font-bold text-slate-800 mb-2">การระดมทรัพยากร (Edonation)</h3>
-            <p class="text-sm text-slate-500 mb-4">ประสานงานขอความสนับสนุนด้านทุนทรัพย์หรือสิ่งของจากชุมชนและศิษย์เก่า
-            </p>
-            <button class="text-sm font-bold text-fuchsia-600 hover:text-fuchsia-700 flex items-center gap-2">
-                ระบบบริจาค <i class="fa-solid fa-arrow-right"></i>
-            </button>
+
+            <div class="p-6">
+                <!-- Progress bar for a campaign -->
+                <div class="mb-6">
+                    <div class="flex justify-between items-end mb-2">
+                        <div>
+                            <p class="font-bold text-slate-800 text-sm">กองทุนผ้าป่าเพื่อการศึกษา</p>
+                            <p class="text-xs text-slate-500">เป้าหมาย: 1,000,000 บาท</p>
+                        </div>
+                        <p class="font-bold text-fuchsia-600 text-sm">650,500 ฿</p>
+                    </div>
+                    <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
+                        <div class="bg-gradient-to-r from-fuchsia-500 to-pink-500 h-full rounded-full"
+                            style="width: 65%;"></div>
+                    </div>
+                </div>
+
+                <div class="space-y-3" id="budget-donation-list">
+                </div>
+            </div>
         </div>
     </div>
 </div>

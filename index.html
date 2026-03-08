@@ -278,11 +278,7 @@
                 </a>
                 <a onclick="switchPage('page-general', this)" class="menu-item">
                     <i class="fa-solid fa-building"></i>
-                    <span>ทั่วไป (เยี่ยมบ้าน)</span>
-                </a>
-                <a onclick="switchPage('page-document', this)" class="menu-item">
-                    <i class="fa-solid fa-folder-open"></i>
-                    <span>งานสารบรรณ</span>
+                    <span>ทั่วไป</span>
                 </a>
 
                 <div class="menu-header">Activities</div>
@@ -329,13 +325,197 @@
             </div>
 
             <div id="page-home" class="page-content">
-                <div class="bg-white p-10 rounded-[1.5rem] text-center shadow-sm border border-gray-100">
+                <!-- Quick Stats Row -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
                     <div
-                        class="w-20 h-20 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-4 text-blue-600 text-3xl">
-                        <i class="fa-solid fa-chart-pie"></i>
+                        class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 flex items-center justify-between relative overflow-hidden group">
+                        <div
+                            class="absolute -right-4 -bottom-4 w-20 h-20 bg-blue-50 rounded-full group-hover:scale-150 transition-transform duration-500 opacity-50">
+                        </div>
+                        <div>
+                            <p class="text-slate-500 text-[10px] font-bold uppercase tracking-wider mb-1">
+                                นักเรียนทั้งหมด</p>
+                            <h3 class="text-2xl font-black text-slate-800">2,450</h3>
+                            <p class="text-[10px] text-emerald-500 font-bold mt-1"><i class="fa-solid fa-arrow-up"></i>
+                                +12 จากปีที่แล้ว</p>
+                        </div>
+                        <div
+                            class="w-11 h-11 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 text-lg relative z-10 shadow-sm">
+                            <i class="fa-solid fa-children"></i>
+                        </div>
                     </div>
-                    <h2 class="text-xl font-bold text-gray-800">Dashboard</h2>
-                    <p class="text-gray-400">เลือกเมนูทางซ้ายเพื่อเริ่มงาน</p>
+                    <div
+                        class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 flex items-center justify-between relative overflow-hidden group">
+                        <div
+                            class="absolute -right-4 -bottom-4 w-20 h-20 bg-emerald-50 rounded-full group-hover:scale-150 transition-transform duration-500 opacity-50">
+                        </div>
+                        <div>
+                            <p class="text-slate-500 text-[10px] font-bold uppercase tracking-wider mb-1">ครูและบุคลากร
+                            </p>
+                            <h3 class="text-2xl font-black text-slate-800">124</h3>
+                            <p class="text-[10px] text-slate-400 font-bold mt-1"><i class="fa-regular fa-clock"></i>
+                                ปฏิบัติงาน 118 คน</p>
+                        </div>
+                        <div
+                            class="w-11 h-11 bg-emerald-100 rounded-full flex items-center justify-center text-emerald-600 text-lg relative z-10 shadow-sm">
+                            <i class="fa-solid fa-user-tie"></i>
+                        </div>
+                    </div>
+                    <div
+                        class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 flex items-center justify-between relative overflow-hidden group">
+                        <div
+                            class="absolute -right-4 -bottom-4 w-20 h-20 bg-amber-50 rounded-full group-hover:scale-150 transition-transform duration-500 opacity-50">
+                        </div>
+                        <div>
+                            <p class="text-slate-500 text-[10px] font-bold uppercase tracking-wider mb-1">ปีการศึกษา</p>
+                            <h3 class="text-2xl font-black text-slate-800">2567</h3>
+                            <p class="text-[10px] text-amber-500 font-bold mt-1">ภาคเรียนที่ 2</p>
+                        </div>
+                        <div
+                            class="w-11 h-11 bg-amber-100 rounded-full flex items-center justify-center text-amber-600 text-lg relative z-10 shadow-sm">
+                            <i class="fa-solid fa-calendar-check"></i>
+                        </div>
+                    </div>
+                    <div
+                        class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 flex items-center justify-between relative overflow-hidden group">
+                        <div
+                            class="absolute -right-4 -bottom-4 w-20 h-20 bg-rose-50 rounded-full group-hover:scale-150 transition-transform duration-500 opacity-50">
+                        </div>
+                        <div>
+                            <p class="text-slate-500 text-[10px] font-bold uppercase tracking-wider mb-1">ห้องเรียน</p>
+                            <h3 class="text-2xl font-black text-slate-800">62</h3>
+                            <p class="text-[10px] text-slate-400 font-bold mt-1">340 คาบ/สัปดาห์</p>
+                        </div>
+                        <div
+                            class="w-11 h-11 bg-rose-100 rounded-full flex items-center justify-center text-rose-600 text-lg relative z-10 shadow-sm">
+                            <i class="fa-solid fa-chalkboard"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Academic Calendar – Planner Style -->
+                <div class="bg-white rounded-[2rem] shadow-sm border border-slate-200 overflow-hidden mb-6">
+
+                    <!-- Planner Header -->
+                    <div
+                        class="bg-slate-900 text-white px-6 md:px-8 py-5 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+                        <div class="flex items-center gap-4">
+                            <button onclick="changeCalMonth(-1)"
+                                class="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition"><i
+                                    class="fa-solid fa-chevron-left text-sm"></i></button>
+                            <div>
+                                <h2 id="plannerMonthTitle"
+                                    class="text-2xl md:text-3xl font-black tracking-tight uppercase">MARCH 2026</h2>
+                                <p id="plannerMonthTitleTH" class="text-xs text-slate-400 font-medium mt-0.5">มีนาคม
+                                    พ.ศ. 2569</p>
+                            </div>
+                            <button onclick="changeCalMonth(1)"
+                                class="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition"><i
+                                    class="fa-solid fa-chevron-right text-sm"></i></button>
+                        </div>
+                        <div class="flex flex-wrap gap-2">
+                            <button onclick="fetchPublicHolidays()"
+                                class="px-3 py-1.5 bg-rose-500/20 border border-rose-400/30 text-rose-300 rounded-lg text-[11px] font-bold hover:bg-rose-500/30 transition whitespace-nowrap"
+                                id="btnFetchHolidays">
+                                <i class="fa-solid fa-cloud-arrow-down mr-1"></i> ดึงวันหยุด
+                            </button>
+                            <button onclick="openAddAcCalendarModal()"
+                                class="px-3 py-1.5 bg-blue-500 text-white rounded-lg text-[11px] font-bold hover:bg-blue-400 transition whitespace-nowrap">
+                                <i class="fa-solid fa-plus mr-1"></i> เพิ่มกำหนดการ
+                            </button>
+                            <div class="bg-white/10 rounded-lg p-0.5 flex">
+                                <button id="btnCalGrid" onclick="toggleCalendarView('grid')"
+                                    class="px-3 py-1 bg-white text-slate-900 shadow-sm rounded-md text-[11px] font-bold transition">ปฏิทิน</button>
+                                <button id="btnCalList" onclick="toggleCalendarView('list')"
+                                    class="px-3 py-1 text-slate-400 hover:text-white rounded-md text-[11px] font-bold transition">รายการ</button>
+                            </div>
+                            <select id="acCalTypeFilter" onchange="loadAcademicCalendar()"
+                                class="px-3 py-1.5 bg-white/10 border border-white/10 rounded-lg text-[11px] font-bold text-slate-300 outline-none cursor-pointer">
+                                <option value="" class="text-slate-900">ทุกประเภท</option>
+                                <option value="exam" class="text-slate-900">การสอบ</option>
+                                <option value="activity" class="text-slate-900">กิจกรรม</option>
+                                <option value="meeting" class="text-slate-900">ประชุม</option>
+                                <option value="holiday" class="text-slate-900">วันหยุด</option>
+                            </select>
+                            <input type="month" id="acCalMonthFilter" onchange="loadAcademicCalendar()"
+                                class="px-3 py-1.5 bg-white/10 border border-white/10 rounded-lg text-[11px] font-bold text-slate-300 cursor-pointer min-w-[120px]">
+                        </div>
+                    </div>
+
+                    <!-- Day-of-week Header Row -->
+                    <div class="grid grid-cols-7 border-b-2 border-slate-900 bg-slate-100">
+                        <div
+                            class="text-center font-black text-rose-600 text-[10px] md:text-xs uppercase tracking-wider py-2.5 border-r border-slate-300">
+                            อาทิตย์</div>
+                        <div
+                            class="text-center font-black text-slate-700 text-[10px] md:text-xs uppercase tracking-wider py-2.5 border-r border-slate-300">
+                            จันทร์</div>
+                        <div
+                            class="text-center font-black text-slate-700 text-[10px] md:text-xs uppercase tracking-wider py-2.5 border-r border-slate-300">
+                            อังคาร</div>
+                        <div
+                            class="text-center font-black text-slate-700 text-[10px] md:text-xs uppercase tracking-wider py-2.5 border-r border-slate-300">
+                            พุธ</div>
+                        <div
+                            class="text-center font-black text-slate-700 text-[10px] md:text-xs uppercase tracking-wider py-2.5 border-r border-slate-300">
+                            พฤหัสบดี</div>
+                        <div
+                            class="text-center font-black text-slate-700 text-[10px] md:text-xs uppercase tracking-wider py-2.5 border-r border-slate-300">
+                            ศุกร์</div>
+                        <div
+                            class="text-center font-black text-blue-600 text-[10px] md:text-xs uppercase tracking-wider py-2.5">
+                            เสาร์</div>
+                    </div>
+
+                    <!-- LIST VIEW -->
+                    <div class="space-y-4 hidden p-6" id="academicCalendarList"></div>
+
+                    <!-- GRID VIEW (Planner) -->
+                    <div id="academicCalendarGrid" class="w-full">
+                        <div id="calendarDaysGrid" class="grid grid-cols-7">
+                            <!-- JS will render planner cells here -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Action Buttons -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <button onclick="switchPage('page-academic', document.querySelector('[onclick*=page-academic]'))"
+                        class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md hover:-translate-y-0.5 transition-all text-left group">
+                        <div
+                            class="w-10 h-10 bg-blue-50 text-blue-500 rounded-xl flex items-center justify-center mb-3 group-hover:bg-blue-500 group-hover:text-white transition-all">
+                            <i class="fa-solid fa-graduation-cap"></i>
+                        </div>
+                        <h4 class="font-bold text-slate-800 text-sm">ฝ่ายวิชาการ</h4>
+                        <p class="text-[10px] text-slate-400 mt-1">จัดการเรียน ตารางสอน วัดผล</p>
+                    </button>
+                    <button onclick="switchPage('page-general', document.querySelector('[onclick*=page-general]'))"
+                        class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md hover:-translate-y-0.5 transition-all text-left group">
+                        <div
+                            class="w-10 h-10 bg-amber-50 text-amber-500 rounded-xl flex items-center justify-center mb-3 group-hover:bg-amber-500 group-hover:text-white transition-all">
+                            <i class="fa-solid fa-building-columns"></i>
+                        </div>
+                        <h4 class="font-bold text-slate-800 text-sm">บริหารทั่วไป</h4>
+                        <p class="text-[10px] text-slate-400 mt-1">เยี่ยมบ้าน สารบรรณ</p>
+                    </button>
+                    <button onclick="switchPage('page-budget', document.querySelector('[onclick*=page-budget]'))"
+                        class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md hover:-translate-y-0.5 transition-all text-left group">
+                        <div
+                            class="w-10 h-10 bg-emerald-50 text-emerald-500 rounded-xl flex items-center justify-center mb-3 group-hover:bg-emerald-500 group-hover:text-white transition-all">
+                            <i class="fa-solid fa-coins"></i>
+                        </div>
+                        <h4 class="font-bold text-slate-800 text-sm">งบประมาณ</h4>
+                        <p class="text-[10px] text-slate-400 mt-1">วางแผน การเงิน จัดซื้อ</p>
+                    </button>
+                    <button onclick="switchPage('page-hr', document.querySelector('[onclick*=page-hr]'))"
+                        class="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md hover:-translate-y-0.5 transition-all text-left group">
+                        <div
+                            class="w-10 h-10 bg-purple-50 text-purple-500 rounded-xl flex items-center justify-center mb-3 group-hover:bg-purple-500 group-hover:text-white transition-all">
+                            <i class="fa-solid fa-people-group"></i>
+                        </div>
+                        <h4 class="font-bold text-slate-800 text-sm">งานบุคคล</h4>
+                        <p class="text-[10px] text-slate-400 mt-1">อัตรากำลัง พัฒนา วินัย</p>
+                    </button>
                 </div>
             </div>
 
@@ -380,6 +560,10 @@
             Promise.all(loadPromises).then(() => {
                 checkSession();
                 document.getElementById('current-date').innerText = new Date().toLocaleDateString('th-TH');
+                // Render the calendar on the main dashboard
+                if (typeof loadAcademicCalendar === 'function') {
+                    loadAcademicCalendar();
+                }
             });
         };
 
