@@ -9,6 +9,160 @@ const API_URL = 'https://script.google.com/macros/s/AKfycbywQ0W7vBq7d.../exec';
 // Demo mode: ถ้า API_URL ยังไม่ได้ตั้งค่า จะใช้ระบบจำลองอัตโนมัติ
 const IS_DEMO_MODE = !API_URL || API_URL.includes('AKfycbywQ0W7vBq7d...');
 
+// ==========================================
+// INITIAL SETUP SYSTEM
+// ==========================================
+
+function runInitialSetup() {
+    const folderId = document.getElementById('setup-folder-id').value.trim();
+    if (!folderId) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'กรุณาระบุ Folder ID',
+            text: 'คุณต้องวาง Google Drive Folder ID ก่อนเริ่มตั้งค่า',
+            background: '#1e293b',
+            color: '#fff',
+            confirmButtonColor: '#3b82f6'
+        });
+        return;
+    }
+
+    const btn = document.getElementById('btn-setup');
+    const progressDiv = document.getElementById('setup-progress');
+    const progressBar = document.getElementById('setup-progress-bar');
+    const progressText = document.getElementById('setup-progress-text');
+    const progressDetail = document.getElementById('setup-progress-detail');
+
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> กำลังตั้งค่า...';
+    progressDiv.classList.remove('hidden');
+
+    // Setup steps simulation
+    const subfolders = [
+        { key: 'academic', name: '01-วิชาการ', icon: 'fa-graduation-cap', sheet: 'ข้อมูลวิชาการ' },
+        { key: 'budget', name: '02-งบประมาณ', icon: 'fa-coins', sheet: 'ข้อมูลงบประมาณ' },
+        { key: 'hr', name: '03-บุคคล', icon: 'fa-users', sheet: 'ข้อมูลบุคลากร' },
+        { key: 'general', name: '04-ทั่วไป', icon: 'fa-building', sheet: 'ข้อมูลทั่วไป' },
+        { key: 'council', name: '05-สภานักเรียน', icon: 'fa-bullhorn', sheet: 'ข้อมูลสภานักเรียน' },
+        { key: 'backup', name: '06-สำรองข้อมูล', icon: 'fa-database', sheet: 'บันทึกการสำรอง' }
+    ];
+
+    // Build a flat list of all steps
+    const steps = [];
+
+    // Step 0: Connect
+    steps.push({ text: 'กำลังเชื่อมต่อ Google Drive...', detail: 'ตรวจสอบ Folder ID: ' + folderId, action: null });
+
+    // Step 1: Create Users Sheet at root folder
+    steps.push({
+        text: 'สร้าง Google Sheet: ข้อมูลผู้ใช้งาน (Users)',
+        detail: 'เก็บ Username, Password, ชื่อ, ตำแหน่ง, สถานะ',
+        action: (config) => {
+            const sheetId = mockId();
+            config.usersSheetId = sheetId;
+        }
+    });
+
+    // Steps 2+: Create subfolder + sheet pairs
+    subfolders.forEach(sf => {
+        steps.push({
+            text: 'สร้างโฟลเดอร์: ' + sf.name,
+            detail: '',
+            action: (config) => {
+                const sfId = mockId();
+                config.subfolders[sf.key] = { folderId: sfId, sheetId: '' };
+                // update detail dynamically
+                return 'Folder ID: ' + sfId;
+            }
+        });
+        steps.push({
+            text: 'สร้าง Google Sheet: ' + sf.sheet,
+            detail: '',
+            action: (config) => {
+                const sheetId = mockId();
+                config.subfolders[sf.key].sheetId = sheetId;
+                return 'Sheet ID: ' + sheetId + ' → ' + sf.name;
+            }
+        });
+    });
+
+    // Final step
+    steps.push({ text: 'บันทึกการตั้งค่า...', detail: 'เกือบเสร็จแล้ว!', action: null });
+
+    const totalSteps = steps.length;
+    let currentStepIdx = 0;
+    const config = { rootFolderId: folderId, usersSheetId: '', subfolders: {} };
+
+    // Generate mock IDs
+    function mockId() {
+        return 'mock_' + Math.random().toString(36).substring(2, 15);
+    }
+
+    const interval = setInterval(() => {
+        if (currentStepIdx < totalSteps) {
+            const step = steps[currentStepIdx];
+
+            // Execute action if any
+            let dynamicDetail = step.detail;
+            if (step.action) {
+                const result = step.action(config);
+                if (result) dynamicDetail = result;
+            }
+
+            // Update progress
+            const pct = Math.round(((currentStepIdx + 1) / totalSteps) * 100);
+            progressBar.style.width = pct + '%';
+            progressText.innerText = step.text;
+            progressDetail.innerText = dynamicDetail;
+
+            currentStepIdx++;
+        } else {
+            clearInterval(interval);
+
+            setTimeout(() => {
+                // Save config to localStorage
+                localStorage.setItem('SCHOOL_GDRIVE_CONFIG', JSON.stringify(config));
+                localStorage.setItem('SCHOOL_SETUP_COMPLETE', 'true');
+
+                // Update the googleDriveFolderId variable
+                if (typeof googleDriveFolderId !== 'undefined') {
+                    googleDriveFolderId = folderId;
+                }
+
+                progressBar.style.width = '100%';
+                progressText.innerText = 'ตั้งค่าเสร็จสมบูรณ์!';
+                progressDetail.innerText = 'ระบบพร้อมใช้งาน';
+
+                const totalSheets = subfolders.length + 1; // +1 for Users sheet
+
+                setTimeout(() => {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'ตั้งค่าระบบเสร็จสมบูรณ์!',
+                        html: `สร้างโฟลเดอร์ย่อย <b>${subfolders.length}</b> โฟลเดอร์<br>และ Google Sheets <b>${totalSheets}</b> ไฟล์<br><small class="text-slate-400">(รวม Sheet ผู้ใช้งาน + บัญชี admin เริ่มต้น)</small><br><br>กรุณาเข้าสู่ระบบด้วย <b>admin</b> / <b>admin</b>`,
+                        background: '#1e293b',
+                        color: '#fff',
+                        confirmButtonColor: '#3b82f6',
+                        confirmButtonText: 'ไปหน้า Login'
+                    }).then(() => {
+                        showLogin();
+                    });
+                }, 800);
+            }, 600);
+        }
+    }, 700);
+}
+
+function getSubfolderConfig() {
+    const storedConfig = localStorage.getItem('SCHOOL_GDRIVE_CONFIG');
+    if (storedConfig) {
+        try {
+            return JSON.parse(storedConfig);
+        } catch (e) { return null; }
+    }
+    return null;
+}
+
 // ผู้ใช้ในโหมด Demo
 const DEMO_USERS = [
     { username: 'admin', password: '123', name: 'ผู้ดูแลระบบ', role: 'admin' },
