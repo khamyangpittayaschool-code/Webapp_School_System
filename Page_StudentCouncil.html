@@ -96,7 +96,7 @@
 
     <!-- Main Menus -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-        <div onclick="openStudentCouncilSubsystem('morning_duty')"
+        <div id="sc-module-morning" onclick="openStudentCouncilSubsystem('morning_duty')"
             class="bg-white rounded-3xl p-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all cursor-pointer group hover:-translate-y-1 duration-300 flex flex-col h-full">
             <div
                 class="w-14 h-14 bg-rose-50 text-rose-500 rounded-[1.25rem] flex items-center justify-center text-2xl mb-5 group-hover:bg-rose-500 group-hover:text-white group-hover:shadow-lg group-hover:shadow-rose-500/30 transition-all duration-300">
@@ -111,7 +111,7 @@
             </div>
         </div>
 
-        <div onclick="openStudentCouncilSubsystem('assembly')"
+        <div id="sc-module-assembly" onclick="openStudentCouncilSubsystem('assembly')"
             class="bg-white rounded-3xl p-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all cursor-pointer group hover:-translate-y-1 duration-300 flex flex-col h-full">
             <div
                 class="w-14 h-14 bg-indigo-50 text-indigo-500 rounded-[1.25rem] flex items-center justify-center text-2xl mb-5 group-hover:bg-indigo-500 group-hover:text-white group-hover:shadow-lg group-hover:shadow-indigo-500/30 transition-all duration-300">
@@ -126,7 +126,7 @@
             </div>
         </div>
 
-        <div onclick="openStudentCouncilSubsystem('cleaning')"
+        <div id="sc-module-cleaning" onclick="openStudentCouncilSubsystem('cleaning')"
             class="bg-white rounded-3xl p-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all cursor-pointer group hover:-translate-y-1 duration-300 flex flex-col h-full">
             <div
                 class="w-14 h-14 bg-teal-50 text-teal-500 rounded-[1.25rem] flex items-center justify-center text-2xl mb-5 group-hover:bg-teal-500 group-hover:text-white group-hover:shadow-lg group-hover:shadow-teal-500/30 transition-all duration-300">
@@ -448,3 +448,109 @@
             <!-- JS Will Render Here -->
         </div>
     </div>
+<script>
+// === ����˹����Ҹ� ===
+function renderAssemblyTable() {
+    const tbody = document.getElementById('assembly-table-body');
+    if (!tbody) return;
+    const today = typeof _todayStr === 'function' ? _todayStr() : new Date().toISOString().slice(0,10);
+    const saved = (typeof _loadStorage === 'function' ? _loadStorage('progress_council_assembly') : []).filter(r => r.date === today);
+    const rooms = (typeof SCHOOL_CONFIG !== 'undefined') ? SCHOOL_CONFIG.rooms : [];
+    tbody.innerHTML = rooms.map(room => {
+        const rec = saved.find(r => r.room === room);
+        return `<tr class="border-b border-slate-50 hover:bg-slate-50/50 transition" data-room="${room}">
+            <td class="p-4 px-6 font-bold text-slate-800 text-sm">${room}</td>
+            <td class="p-3 text-center"><input type="number" class="asm-total w-16 text-center border border-slate-200 rounded-lg p-1 text-sm" value="${rec?rec.total:''}" placeholder="��." min="0"></td>
+            <td class="p-3 text-center"><input type="number" class="asm-present w-16 text-center border border-slate-200 rounded-lg p-1 text-sm" value="${rec?rec.present:''}" placeholder="��" min="0"></td>
+            <td class="p-3 text-center"><input type="number" class="asm-absent w-16 text-center border border-slate-200 rounded-lg p-1 text-sm bg-rose-50" value="${rec?rec.absent:''}" placeholder="�Ҵ" min="0"></td>
+            <td class="p-3 px-6 text-center">${rec ? '<span class="text-[11px] px-2 py-1 bg-emerald-100 text-emerald-700 rounded-full font-bold">�ѹ�֡����</span>' : '<span class="text-[11px] px-2 py-1 bg-slate-100 text-slate-400 rounded-full font-bold">�ͺѹ�֡</span>'}</td>
+        </tr>`;
+    }).join('');
+}
+
+function submitAssemblyBatch() {
+    const rows = document.querySelectorAll('#assembly-table-body tr[data-room]');
+    if (!rows.length && typeof Swal !== 'undefined') { Swal.fire('����͹','��辺�����ŵ��ҧ','warning'); return; }
+    let saved = 0;
+    const recorder = (window.currentUser && window.currentUser.name) ? window.currentUser.name : '��ҹѡ���¹';
+    rows.forEach(row => {
+        const room = row.getAttribute('data-room');
+        const total = parseInt(row.querySelector('.asm-total').value) || 0;
+        const present = parseInt(row.querySelector('.asm-present').value) || 0;
+        const absent = parseInt(row.querySelector('.asm-absent').value) || 0;
+        if (total > 0 && typeof saveAssemblyRecord === 'function') { saveAssemblyRecord(room, total, present, absent, recorder); saved++; }
+    });
+    if (typeof Swal !== 'undefined') {
+        Swal.fire({ title: saved > 0 ? '�ѹ�֡�����!' : '����͹', text: saved > 0 ? `�ѹ�֡�ʹ���� ${saved} ��ͧ` : '��سҡ�͡�����š�͹��', icon: saved > 0 ? 'success' : 'warning', confirmButtonText: '��ŧ', confirmButtonColor: '#4f46e5', timer: 2500 });
+    }
+    renderAssemblyTable();
+}
+
+// === ��Ǩࢵ�Ѻ�Դ�ͺ ===
+function renderCleaningGrid() {
+    const grid = document.getElementById('cleaning-grid');
+    if (!grid) return;
+    const today = typeof _todayStr === 'function' ? _todayStr() : new Date().toISOString().slice(0,10);
+    const saved = (typeof _loadStorage === 'function' ? _loadStorage('progress_council_cleaning') : []).filter(r => r.date === today);
+    const zones = (typeof SCHOOL_CONFIG !== 'undefined') ? SCHOOL_CONFIG.cleaningZones : [];
+    grid.innerHTML = zones.map(z => {
+        const rec = saved.find(r => r.zone === z.zone);
+        const isDone = !!rec;
+        const sc = rec ? (rec.score >= 4 ? 'text-emerald-600' : rec.score >= 3 ? 'text-amber-500' : 'text-rose-500') : 'text-slate-400';
+        return `<div class="bg-white rounded-2xl p-5 shadow-sm border ${isDone?'border-emerald-200 bg-emerald-50/20':'border-slate-100'} hover:shadow-md transition cursor-pointer" onclick="openCleaningEvalModal('${z.zone}','${z.responsible}')">
+            <div class="flex items-start justify-between mb-3">
+                <div class="w-10 h-10 rounded-xl ${isDone?'bg-emerald-100 text-emerald-600':'bg-teal-50 text-teal-500'} flex items-center justify-center text-lg"><i class="fa-solid ${isDone?'fa-check':'fa-broom'}"></i></div>
+                ${isDone ? '<span class="text-[10px] px-2 py-0.5 bg-emerald-100 text-emerald-700 rounded-full font-bold">��Ǩ����</span>' : '<span class="text-[10px] px-2 py-0.5 bg-red-50 text-red-500 rounded-full font-bold">�ѧ����Ǩ</span>'}
+            </div>
+            <h4 class="font-bold text-slate-800 text-sm mb-1">${z.zone}</h4>
+            <p class="text-[11px] text-slate-500 mb-2">${z.responsible}</p>
+            ${isDone ? `<p class="text-xs font-bold ${sc}">��ṹ: ${rec.score}/5 � ${rec.inspector}</p>` : '<p class="text-xs text-slate-400">�����ͺѹ�֡��õ�Ǩ</p>'}
+        </div>`;
+    }).join('');
+}
+
+function openCleaningEvalModal(zone, responsible) {
+    if (typeof Swal === 'undefined') return;
+    Swal.fire({
+        title: `�����Թࢵ: ${zone}`,
+        html: `<p class="text-sm text-slate-500 mb-3">����Ѻ�Դ�ͺ: <strong>${responsible}</strong></p>
+            <div class="text-left space-y-3">
+                <div><label class="text-xs font-bold text-slate-500 block mb-1">��ṹ (1-5)</label>
+                    <select id="cleanScore" class="w-full border border-slate-200 rounded-xl p-3 text-sm outline-none">
+                        <option value="5">5 � ��������</option><option value="4">4 � ��</option>
+                        <option value="3" selected>3 � ����</option><option value="2">2 � ��ͧ��Ѻ��ا</option><option value="1">1 � ����ҹ</option>
+                    </select></div>
+                <div><label class="text-xs font-bold text-slate-500 block mb-1">����Ǩ</label>
+                    <input id="cleanInspector" class="w-full border border-slate-200 rounded-xl p-3 text-sm outline-none" placeholder="������Ҽ���Ǩ"></div>
+                <div><label class="text-xs font-bold text-slate-500 block mb-1">�����˵�</label>
+                    <input id="cleanNotes" class="w-full border border-slate-200 rounded-xl p-3 text-sm outline-none" placeholder="��觷���ͧ��� (�����)"></div>
+            </div>`,
+        showCancelButton: true, confirmButtonText: '�ѹ�֡', cancelButtonText: '¡��ԡ', confirmButtonColor: '#0d9488',
+        preConfirm: () => ({
+            score: parseInt(document.getElementById('cleanScore').value),
+            inspector: document.getElementById('cleanInspector').value.trim() || responsible,
+            notes: document.getElementById('cleanNotes').value.trim()
+        })
+    }).then(r => {
+        if (r.isConfirmed && typeof saveCleaningRecord === 'function') {
+            saveCleaningRecord(zone, r.value.score, r.value.inspector, r.value.notes);
+            renderCleaningGrid();
+            Swal.fire({ title: '�ѹ�֡����!', text: `ࢵ ${zone} � ��ṹ ${r.value.score}/5`, icon: 'success', timer: 2000, showConfirmButton: false });
+        }
+    });
+}
+
+function openNewCleaningEvalModal() {
+    if (typeof SCHOOL_CONFIG === 'undefined' || typeof Swal === 'undefined') return;
+    const zones = SCHOOL_CONFIG.cleaningZones;
+    Swal.fire({ title: '���͡ࢵ���л����Թ', input: 'select', inputOptions: Object.fromEntries(zones.map(z => [z.zone, z.zone])), inputPlaceholder: '���͡ࢵ...', showCancelButton: true, confirmButtonText: '�Ѵ�', cancelButtonText: '¡��ԡ', confirmButtonColor: '#0d9488' })
+    .then(r => { if (r.isConfirmed && r.value) { const z = zones.find(x => x.zone === r.value); openCleaningEvalModal(r.value, z ? z.responsible : ''); } });
+}
+
+// Auto-render when views become visible
+document.addEventListener('DOMContentLoaded', () => {
+    const watch = (id, fn) => { const el = document.getElementById(id); if (!el) return; new MutationObserver(() => { if (!el.classList.contains('hidden')) fn(); }).observe(el, { attributes: true, attributeFilter: ['class'] }); };
+    watch('student-council-assembly-view', renderAssemblyTable);
+    watch('student-council-cleaning-view', renderCleaningGrid);
+});
+</script>

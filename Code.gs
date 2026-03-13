@@ -3,93 +3,164 @@
 // This matches the frontend logic from index.html
 // ==========================================
 
-var FOLDER_ID = '1gpeQHoqQ2s0O4pSPAoXak7inI7yv98rO'; // Replace
-var SCHOOL_NAME = 'โรงเรียนคำยางพิทยา';
-var SCHOOL_LOGO = 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjcCn-aPSoZ9SzXJ2Vy_bO8rpfaSobTg8oVJArPdbZlL42_zWba24X5C8SlJg_VA1fR4oqPE8gLoyD_yg7SOEUtnXoavvmCKZXOMRjtZSItrLiuR7qRnnqH5ai1MlHIe3CwJVyS-0vyuUQ/s320/1041680867.jpg'; // Or leave empty ''
+var FOLDER_ID = '1gpeQHoqQ2s0O4pSPAoXak7inI7yv98rO'; // สามารถปล่อยว่างไว้ถ้าระบุใน ScriptProperties แล้ว
+var SCHOOL_NAME = 'โรงเรียน...';
+var SCHOOL_LOGO = '';
 
-// --- Database Configuration Mapping ---
-// กำหนดคู่ของชื่อ Module กับ ID ของ Google Sheet
-var DB_CONFIG = {
-CORE: '1on1KBuRb_AlXe8PFGgOjZXFiAqGlnuInAuDr7QrR1Xs',       // ฐานข้อมูลกลาง (นักเรียน, ผู้ใช้, ตั้งค่า)
-ACADEMIC: '1GQyJy5n1X0mXjngeUwnxUg5wZI5bcnHzRp_IGfo-4yI', // ฐานข้อมูลวิชาการ
-BUDGET: '1xPqN6QNNpHq6YXMTL2-EmKlAKQhYEkeFo0v_07EZtHY',     // ฐานข้อมูลงบประมาณ
-HR: '10nDOjl37Q7zQ2TLaMurro4Qn3Rs2q-NAz9uzjH7BWi0',             // ฐานข้อมูลบุคคล
-GENERAL: '1xmPJoEwo-DLy0L6ZBWApflcrJ26UJgwAZw5ezQrItEc',   // ฐานข้อมูลทั่วไป (เยี่ยมบ้าน, สารบรรณ)
-STUDENT: '15dz3JDnJlUCC5O6Jn4rnT6V9I7PRAmOE1Jcj4_1WtwE'    // ฐานข้อมูลกิจการนักเรียน/สภานักเรียน
-};
-
-// Helper: เลือก DB ตาม Module
+// --- ดึง ID ของฐานข้อมูลจากระบบ ---
 function getDbId(module) {
-  return DB_CONFIG[module] || DB_CONFIG.CORE;
+  var props = PropertiesService.getScriptProperties();
+  return props.getProperty(module + '_DB_ID');
 }
 
-// --- Setup System (Run Once in Apps Script Editor) ---
-function setupSystem() {
-  Logger.log("Starting Setup System...");
+// ==========================================
+// ONE-CLICK SETUP (ติดตั้งระบบอัตโนมัติ)
+// ==========================================
+// ให้ผู้ใช้เปิดเมนู เลือก installSystem แล้วกด "เรียกใช้ (Run)" แค่ครั้งเดียว
+function installSystem() {
+  Logger.log("เริ่มการตั้งค่าระบบและสร้างฐานข้อมูลอัตโนมัติ...");
   
-  const sheetStructure = {
-    CORE: [
-      { name: "Users", headers: ["username", "password", "name", "role", "timestamp"] },
+  var props = PropertiesService.getScriptProperties();
+  
+  // 1. สร้างโฟลเดอร์หลักในบัญชีของผู้ใช้
+  var rootFolder = DriveApp.createFolder('School_App_Database_' + new Date().getTime());
+  var rootFolderId = rootFolder.getId();
+  props.setProperty('ROOT_FOLDER_ID', rootFolderId);
+  Logger.log("สร้างโฟลเดอร์หลักสำเร็จ: " + rootFolder.getName());
+
+  // HomeVisit headers ครบทุก field จาก Page_General.html
+  var homeVisitHeaders = [
+    // --- Step 1: ข้อมูลการเยี่ยม ---
+    "student_id", "class_level", "recorded_by", "academic_year",
+    "visit_status", "last_visit_date", "informant_relation", "photo_source",
+    "map_lat", "map_long", "img_house_outside", "img_house_inside",
+    // --- Step 2: ข้อมูลส่วนตัว ---
+    "profile_image", "national_id", "nickname", "birth_date",
+    "birth_province", "birth_amphoe", "birth_tambon",
+    "age", "weight", "height", "nationality", "race", "religion", "blood_type",
+    "previous_school", "move_in_reason", "disadvantage_type", "disability_type",
+    "congenital_disease", "special_ability", "scholarship_status",
+    // --- Step 3: ข้อมูลบิดา ---
+    "father_status", "father_name", "father_occupation", "father_income",
+    "father_age", "father_phone", "father_education",
+    // --- Step 4: ข้อมูลมารดา ---
+    "mother_status", "mother_name", "mother_occupation", "mother_income",
+    "mother_age", "mother_phone", "mother_education",
+    // --- Step 5: ข้อมูลผู้ปกครอง ---
+    "guardian_name", "guardian_relation", "guardian_occupation",
+    "guardian_income", "guardian_phone", "guardian_education",
+    // --- Step 6: ที่พักของนักเรียน ---
+    "house_no", "house_moo", "house_road", "house_tambon",
+    "house_amphoe", "house_province", "house_distance_km",
+    "house_transport_type", "house_living_with",
+    // --- Step 7: สภาพเศรษฐกิจ ---
+    "family_income", "family_expense", "family_debt", "family_land",
+    "family_house_type", "family_members_count", "family_members_details",
+    // --- Step 8: สภาพชีวิตและสรุปความช่วยเหลือ ---
+    "student_behavior", "student_health", "need_financial_help",
+    "need_equipment_help", "need_mental_help", "need_social_help",
+    "teacher_summary", "next_action", "timestamp"
+  ];
+
+  const dbs = [
+    { key: 'CORE', name: '00_CORE_DB', folderName: '00_CORE', sheets: [
+      { name: "Users",    headers: ["username", "password", "name", "role", "timestamp"] },
       { name: "Students", headers: ["student_id", "student_name", "class_level", "room", "status", "profile_image"] },
       { name: "Settings", headers: ["setting_key", "setting_value"] }
-    ],
-    ACADEMIC: [
-      { name: "Assignments", headers: ["id", "title", "subject", "teacher", "status", "created_at"] },
-      { name: "Schedule", headers: ["id", "teacher", "subject", "day", "time", "room"] },
+    ]},
+    { key: 'ACADEMIC', name: '01_ACADEMIC_DB', folderName: '01_ACADEMIC', sheets: [
+      { name: "Assignments",  headers: ["id", "title", "subject", "teacher", "status", "created_at"] },
+      { name: "Schedule",     headers: ["id", "teacher", "subject", "day", "time", "room"] },
       { name: "AcademicDocs", headers: ["docId", "workSystem", "details", "year", "term", "teacherId", "teacherName", "fileName", "fileUrl", "status", "comment", "approvedBy", "timestamp"] }
-    ],
-    BUDGET: [
+    ]},
+    { key: 'BUDGET', name: '02_BUDGET_DB', folderName: '02_BUDGET', sheets: [
       { name: "Transactions", headers: ["id", "date", "type", "description", "amount", "budget_code", "status"] }
-    ],
-    HR: [
+    ]},
+    { key: 'HR', name: '03_HR_DB', folderName: '03_HR', sheets: [
       { name: "Staff", headers: ["id", "name", "position", "department", "start_date"] },
       { name: "Leave", headers: ["id", "staff_id", "leave_type", "start_date", "end_date", "reason", "status"] }
-    ],
-    GENERAL: [
-      { name: "Saraban", headers: ["id", "doc_number", "date", "title", "from", "to", "status", "type", "timestamp"] },
-      { name: "HomeVisit", headers: ["student_id", "visit_date", "status", "details", "teacher_summary", "lat", "long", "img_out", "img_in"] }
-    ],
-    STUDENT: [
+    ]},
+    { key: 'GENERAL', name: '04_GENERAL_DB', folderName: '04_GENERAL', sheets: [
+      { name: "Saraban",   headers: ["id", "doc_number", "date", "title", "from", "to", "status", "type", "timestamp"] },
+      { name: "HomeVisit", headers: homeVisitHeaders }
+    ]},
+    { key: 'STUDENT', name: '05_STUDENT_DB', folderName: '05_STUDENT', sheets: [
       { name: "Behavior", headers: ["student_id", "date", "type", "points", "reason", "teacher"] }
-    ]
-  };
+    ]}
+  ];
 
-  for (let module in DB_CONFIG) {
-    let dbId = DB_CONFIG[module];
-    if (!dbId || dbId.includes("YOUR_")) {
-      Logger.log(`Skipping ${module} - DB ID is not set.`);
-      continue;
-    }
+  // 2. สร้างโฟลเดอร์ย่อย + Google Sheet แต่ละโมดูล
+  // เตรียม Settings sheet สำหรับเก็บ Folder IDs
+  var coreSettingsSheet = null;
 
-    try {
-      let ss = SpreadsheetApp.openById(dbId);
-      Logger.log(`Setting up ${module} Database...`);
-      
-      let requiredSheets = sheetStructure[module];
-      if (requiredSheets) {
-        requiredSheets.forEach(function(req) {
-          let sheet = ss.getSheetByName(req.name);
-          if (!sheet) {
-            sheet = ss.insertSheet(req.name);
-            Logger.log(`Created new sheet: ${req.name} in ${module}`);
-          }
-          
-          // Set headers if sheet is empty
-          if (sheet.getLastRow() === 0) {
-            sheet.appendRow(req.headers);
-            // Optional: Format header row
-            let headerRange = sheet.getRange(1, 1, 1, req.headers.length);
-            headerRange.setFontWeight("bold").setBackground("#e0e0e0");
-          }
-        });
+  for (var i = 0; i < dbs.length; i++) {
+    var dbDef = dbs[i];
+
+    // สร้างโฟลเดอร์ย่อยของแต่ละโมดูล
+    var moduleFolder = rootFolder.createFolder(dbDef.folderName);
+    var moduleFolderId = moduleFolder.getId();
+    props.setProperty(dbDef.key + '_FOLDER_ID', moduleFolderId);
+    Logger.log("สร้างโฟลเดอร์ " + dbDef.folderName + " id: " + moduleFolderId);
+
+    // สร้าง Spreadsheet และย้ายเข้าโฟลเดอร์ย่อย
+    var ss = SpreadsheetApp.create(dbDef.name);
+    var file = DriveApp.getFileById(ss.getId());
+    file.moveTo(moduleFolder);
+    
+    props.setProperty(dbDef.key + '_DB_ID', ss.getId());
+    Logger.log("สร้างฐานข้อมูล " + dbDef.name + " สำเร็จ");
+
+    // สร้างชีตย่อยและใส่ Header
+    for (var j = 0; j < dbDef.sheets.length; j++) {
+      var req = dbDef.sheets[j];
+      var sheet = ss.getSheetByName(req.name);
+      if (!sheet) { sheet = ss.insertSheet(req.name); }
+      if (sheet.getLastRow() === 0) {
+        sheet.appendRow(req.headers);
+        sheet.getRange(1, 1, 1, req.headers.length).setFontWeight("bold").setBackground("#4a86e8").setFontColor("#ffffff");
       }
-    } catch (e) {
-      Logger.log(`Error setting up ${module} (${dbId}): ${e.toString()}`);
+      // เก็บ reference ถึง Settings sheet
+      if (dbDef.key === 'CORE' && req.name === 'Settings') {
+        coreSettingsSheet = sheet;
+      }
+    }
+    
+    // ลบ Sheet ค่าเริ่มต้นที่ไม่ต้องการ
+    var sheet1 = ss.getSheetByName('Sheet1') || ss.getSheetByName('แผ่นที่ 1');
+    if (sheet1 && ss.getSheets().length > 1) { ss.deleteSheet(sheet1); }
+    
+    // ตั้งค่า user แอดมินเริ่มต้น
+    if (dbDef.key === 'CORE') {
+       var usersSheet = ss.getSheetByName('Users');
+       if (usersSheet && usersSheet.getLastRow() <= 1) {
+         usersSheet.appendRow(['admin', 'admin', 'ผู้ดูแลระบบสูงสุด', 'admin', new Date().toISOString()]);
+       }
     }
   }
-  
-  Logger.log("Setup System Complete!");
-  return "Setup System Complete!";
+
+  // 3. บันทึก Folder IDs ลงใน Settings Sheet (CORE DB)
+  if (coreSettingsSheet) {
+    var settingRows = [
+      ['ROOT_FOLDER_ID',     rootFolderId],
+      ['CORE_FOLDER_ID',     props.getProperty('CORE_FOLDER_ID')],
+      ['ACADEMIC_FOLDER_ID', props.getProperty('ACADEMIC_FOLDER_ID')],
+      ['BUDGET_FOLDER_ID',   props.getProperty('BUDGET_FOLDER_ID')],
+      ['HR_FOLDER_ID',       props.getProperty('HR_FOLDER_ID')],
+      ['GENERAL_FOLDER_ID',  props.getProperty('GENERAL_FOLDER_ID')],
+      ['STUDENT_FOLDER_ID',  props.getProperty('STUDENT_FOLDER_ID')],
+      ['school_name',        'โรงเรียนของฉัน'],
+      ['school_name_en',     'My School'],
+      ['school_id',          ''],
+      ['school_affiliation', ''],
+      ['school_address',     ''],
+      ['school_logo',        ''],
+    ];
+    for (var k = 0; k < settingRows.length; k++) {
+      coreSettingsSheet.appendRow(settingRows[k]);
+    }
+  }
+
+  Logger.log("✅ การตั้งค่าสำเร็จ 100%! โฟลเดอร์และฐานข้อมูลพร้อมใช้งานแล้วครับ");
 }
 
 // --- API Entry Points ---
@@ -191,6 +262,10 @@ function apiCall(action, payload) {
         return getRecentDocRequests(payload);
       case 'requestDocNumber':
         return requestDocNumber(payload);
+      case 'getSettings':
+        return getSettings(payload);
+      case 'saveSettings':
+        return saveSettings(payload);
       // add more actions as needed...
       default:
         if (typeof this[action] === 'function') {
@@ -456,5 +531,78 @@ function requestDocNumber(payload) {
   } catch (e) {
     Logger.log('requestDocNumber Error: ' + e.toString());
     return { status: false, message: e.toString() };
+  }
+}
+
+// ==========================================
+// SETTINGS FUNCTIONS
+// ==========================================
+
+/**
+ * getSettings - ดึงการตั้งค่าทั้งหมดจาก Settings sheet
+ */
+function getSettings(payload) {
+  try {
+    var dbId = getDbId('CORE');
+    if (!dbId) return { status: 'error', message: 'ยังไม่ได้ติดตั้งระบบ (installSystem)' };
+
+    var ss = SpreadsheetApp.openById(dbId);
+    var sheet = ss.getSheetByName('Settings');
+    if (!sheet || sheet.getLastRow() < 2) return { status: 'success', data: {} };
+
+    var data = sheet.getDataRange().getValues();
+    var settings = {};
+    for (var i = 1; i < data.length; i++) {
+      if (data[i][0]) settings[data[i][0]] = data[i][1];
+    }
+    return { status: 'success', data: settings };
+  } catch (e) {
+    Logger.log('getSettings Error: ' + e.toString());
+    return { status: 'error', message: e.toString() };
+  }
+}
+
+/**
+ * saveSettings - บันทึก/อัพเดทค่าตั้งค่าลงใน Settings sheet
+ * @param {Object} payload - { settings: { key: value, ... } }
+ */
+function saveSettings(payload) {
+  try {
+    var newSettings = payload.settings || {};
+    var dbId = getDbId('CORE');
+    if (!dbId) return { status: 'error', message: 'ยังไม่ได้ติดตั้งระบบ' };
+
+    var ss = SpreadsheetApp.openById(dbId);
+    var sheet = ss.getSheetByName('Settings');
+    if (!sheet) {
+      sheet = ss.insertSheet('Settings');
+      sheet.appendRow(['setting_key', 'setting_value']);
+      sheet.getRange(1, 1, 1, 2).setFontWeight('bold').setBackground('#4a86e8').setFontColor('#ffffff');
+    }
+
+    var data = sheet.getDataRange().getValues();
+    var keyRowMap = {};
+    for (var i = 1; i < data.length; i++) {
+      if (data[i][0]) keyRowMap[data[i][0]] = i + 1; // 1-indexed row number
+    }
+
+    var keys = Object.keys(newSettings);
+    for (var j = 0; j < keys.length; j++) {
+      var k = keys[j];
+      var v = newSettings[k];
+      if (keyRowMap[k]) {
+        // อัพเดทแถวที่มีอยู่
+        sheet.getRange(keyRowMap[k], 2).setValue(v);
+      } else {
+        // เพิ่มแถวใหม่
+        sheet.appendRow([k, v]);
+        keyRowMap[k] = sheet.getLastRow();
+      }
+    }
+
+    return { status: 'success', message: 'บันทึกการตั้งค่าเรียบร้อยแล้ว' };
+  } catch (e) {
+    Logger.log('saveSettings Error: ' + e.toString());
+    return { status: 'error', message: e.toString() };
   }
 }

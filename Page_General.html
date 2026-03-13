@@ -90,7 +90,7 @@
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
 
         <!-- 1. งานสารบรรณ -->
-        <div onclick="openSarabanSystem()"
+        <div data-module="general-saraban" onclick="openSarabanSystem()"
             class="bg-white rounded-3xl p-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all cursor-pointer group hover:-translate-y-1 duration-300 flex flex-col h-full">
             <div class="flex justify-between items-start mb-4">
                 <div
@@ -110,7 +110,8 @@
         </div>
 
         <!-- 2. ระบบดูแลช่วยเหลือ (เยี่ยมบ้าน) -->
-        <div class="bg-gradient-to-br from-amber-50 to-white rounded-3xl p-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-amber-100 hover:shadow-[0_8px_30px_rgb(245,158,11,0.15)] transition-all cursor-pointer group hover:-translate-y-1 duration-300 relative overflow-hidden ring-1 ring-amber-400/20 flex flex-col h-full"
+        <div data-module="general-student-care"
+            class="bg-gradient-to-br from-amber-50 to-white rounded-3xl p-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-amber-100 hover:shadow-[0_8px_30px_rgb(245,158,11,0.15)] transition-all cursor-pointer group hover:-translate-y-1 duration-300 relative overflow-hidden ring-1 ring-amber-400/20 flex flex-col h-full"
             onclick="openHomeVisitSystem()">
             <div
                 class="absolute top-0 right-0 bg-red-500 text-white text-[10px] font-bold px-3 py-1 rounded-bl-xl z-20 shadow-sm animate-pulse">
@@ -134,7 +135,7 @@
         </div>
 
         <!-- 3. กิจการนักเรียน -->
-        <div onclick="openStudentAffairsSystem()"
+        <div data-module="general-student-affairs" onclick="openStudentAffairsSystem()"
             class="bg-white rounded-3xl p-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all cursor-pointer group hover:-translate-y-1 duration-300 flex flex-col h-full">
             <div class="flex justify-between items-start mb-4">
                 <div
@@ -152,7 +153,7 @@
         </div>
 
         <!-- 4. ประชาสัมพันธ์ -->
-        <div onclick="openPRSystem()"
+        <div data-module="general-pr" onclick="openPRSystem()"
             class="bg-white rounded-3xl p-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all cursor-pointer group hover:-translate-y-1 duration-300 flex flex-col h-full">
             <div class="flex justify-between items-start mb-4">
                 <div
@@ -170,7 +171,7 @@
         </div>
 
         <!-- 5. รับนักเรียน -->
-        <div onclick="openAdmissionSystem()"
+        <div data-module="general-admission" onclick="openAdmissionSystem()"
             class="bg-white rounded-3xl p-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all cursor-pointer group hover:-translate-y-1 duration-300 flex flex-col h-full">
             <div class="flex justify-between items-start mb-4">
                 <div
@@ -188,7 +189,7 @@
         </div>
 
         <!-- 6. โภชนาการและอนามัย -->
-        <div onclick="openNutritionSystem()"
+        <div data-module="general-nutrition" onclick="openNutritionSystem()"
             class="bg-white rounded-3xl p-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all cursor-pointer group hover:-translate-y-1 duration-300 flex flex-col h-full">
             <div class="flex justify-between items-start mb-4">
                 <div
@@ -206,7 +207,7 @@
         </div>
 
         <!-- 7. อาคารสถานที่ -->
-        <div onclick="openFacilitiesSystem()"
+        <div data-module="general-facilities" onclick="openFacilitiesSystem()"
             class="bg-white rounded-3xl p-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all cursor-pointer group hover:-translate-y-1 duration-300 flex flex-col h-full">
             <div class="flex justify-between items-start mb-4">
                 <div
@@ -224,7 +225,7 @@
         </div>
 
         <!-- 8. ความสัมพันธ์ชุมชน -->
-        <div onclick="openCommunitySystem()"
+        <div data-module="general-community" onclick="openCommunitySystem()"
             class="bg-white rounded-3xl p-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all cursor-pointer group hover:-translate-y-1 duration-300 flex flex-col h-full">
             <div class="flex justify-between items-start mb-4">
                 <div
@@ -380,7 +381,7 @@
             <i class="fa-solid fa-arrow-left"></i> กลับเมนูหลักงานสารบรรณ
         </button>
         <!-- Quick Actions Row -->
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+        <div class="grid grid-cols-1 lg:grid-cols-[400px_1fr] gap-6 mb-6">
             <!-- ขอเลขเอกสาร -->
             <div class="bg-white p-6 rounded-[2rem] shadow-sm border border-slate-100 h-full flex flex-col">
                 <h3 class="text-lg font-bold text-slate-800 flex items-center gap-2 mb-4">
@@ -401,29 +402,51 @@
                         </div>
                         <div>
                             <label class="block text-xs font-bold text-slate-500 mb-1 ml-1">ประเภทเอกสาร</label>
-                            <select id="docType"
-                                class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm font-bold text-slate-600 focus:ring-2 focus:ring-blue-100 outline-none cursor-pointer">
-                                <option value="บันทึกข้อความ">บันทึกข้อความ</option>
-                                <option value="คำสั่ง">คำสั่ง</option>
-                                <option value="หนังสือส่ง (ปกติ)">หนังสือส่ง (ปกติ)</option>
-                                <option value="หนังสือส่ง (เวียน)">หนังสือส่ง (จดหมายเวียน)</option>
-                                <option value="ประกาศ">ประกาศ</option>
+                            <select id="docType" onchange="updateDocTypeColor(this)"
+                                class="w-full p-2.5 border border-slate-200 rounded-xl text-sm font-bold outline-none cursor-pointer transition-colors bg-blue-50 text-blue-700">
+                                <option value="บันทึกข้อความ" class="text-slate-700 font-medium">บันทึกข้อความ</option>
+                                <option value="คำสั่ง" class="text-slate-700 font-medium">คำสั่ง</option>
+                                <option value="หนังสือส่ง (ปกติ)" class="text-slate-700 font-medium">หนังสือส่ง (ปกติ)
+                                </option>
+                                <option value="หนังสือส่ง (เวียน)" class="text-slate-700 font-medium">หนังสือส่ง
+                                    (จดหมายเวียน)</option>
+                                <option value="ประกาศ" class="text-slate-700 font-medium">ประกาศ</option>
                             </select>
                         </div>
                     </div>
                     <div>
-                        <label class="block text-xs font-bold text-slate-500 mb-1 ml-1">เรื่อง <span
-                                class="text-rose-500">*</span></label>
-                        <input type="text" id="docTitle" required
+                        <div class="flex items-center justify-between mb-1 ml-1">
+                            <label class="text-xs font-bold text-slate-500">เรื่อง <span
+                                    class="text-rose-500">*</span></label>
+                            <button type="button" onclick="configDocTitles()"
+                                class="text-[10px] text-blue-500 hover:text-blue-700 bg-blue-50 hover:bg-blue-100 px-2 py-0.5 rounded transition"
+                                data-admin-only="true">
+                                <i class="fa-solid fa-gear"></i> ตั้งค่าเรื่องที่ใช้บ่อย
+                            </button>
+                        </div>
+                        <input type="text" id="docTitle" list="docTitleSuggestions" required
                             class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-blue-100 outline-none transition"
-                            placeholder="ระบุชื่อเรื่อง...">
+                            placeholder="พิมพ์ชื่อเรื่อง หรือเลือกจากรายการ...">
+                        <datalist id="docTitleSuggestions">
+                            <!-- Populated by JS based on docType -->
+                        </datalist>
                     </div>
                     <div>
-                        <label class="block text-xs font-bold text-slate-500 mb-1 ml-1">ผู้รับ <span
-                                class="text-rose-500">*</span></label>
-                        <input type="text" id="docReceiver" required
+                        <div class="flex items-center justify-between mb-1 ml-1">
+                            <label class="text-xs font-bold text-slate-500">ผู้รับ <span
+                                    class="text-rose-500">*</span></label>
+                            <button type="button" onclick="configDocReceivers()"
+                                class="text-[10px] text-blue-500 hover:text-blue-700 bg-blue-50 hover:bg-blue-100 px-2 py-0.5 rounded transition"
+                                data-admin-only="true">
+                                <i class="fa-solid fa-gear"></i> ตั้งค่าผู้รับที่ใช้บ่อย
+                            </button>
+                        </div>
+                        <input type="text" id="docReceiver" list="docReceiverSuggestions" required
                             class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-blue-100 outline-none transition"
-                            placeholder="เช่น ผู้อำนวยการ...">
+                            placeholder="พิมพ์ชื่อผู้รับ หรือเลือกจากรายการ...">
+                        <datalist id="docReceiverSuggestions">
+                            <!-- Populated by JS -->
+                        </datalist>
                     </div>
                     <div class="flex-grow">
                         <label class="block text-xs font-bold text-slate-500 mb-1 ml-1">หมายเหตุ (ถ้ามี)</label>
@@ -431,11 +454,85 @@
                             class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:ring-2 focus:ring-blue-100 outline-none transition resize-none"
                             placeholder="ระบุรายละเอียดเพิ่มเติม..."></textarea>
                     </div>
+
+                    <!-- File Upload: shown only for คำสั่ง or ประกาศ -->
+                    <div id="docFileUploadWrapper" class="hidden">
+                        <label class="block text-xs font-bold text-purple-600 mb-1 ml-1">
+                            <i class="fa-solid fa-file-arrow-up mr-1"></i> แนบไฟล์เอกสาร (PDF / DOCX)
+                        </label>
+                        <label
+                            class="flex items-center gap-3 cursor-pointer p-3 bg-purple-50 border border-purple-200 border-dashed rounded-xl hover:bg-purple-100 transition">
+                            <i class="fa-solid fa-cloud-arrow-up text-purple-400 text-xl"></i>
+                            <div>
+                                <div class="text-xs font-bold text-purple-700" id="docFileLabel">คลิกเพื่อเลือกไฟล์
+                                </div>
+                                <div class="text-[10px] text-slate-400">รองรับ .pdf, .doc, .docx</div>
+                            </div>
+                            <input type="file" id="docFileInput" accept=".pdf,.doc,.docx" class="hidden"
+                                onchange="document.getElementById('docFileLabel').textContent = this.files[0]?.name || 'คลิกเพื่อเลือกไฟล์'">
+                        </label>
+                    </div>
+
+                    <!-- Budget Linking: shown only for บันทึกข้อความ -->
+                    <div id="docBudgetLinkWrapper" class="hidden">
+                        <label class="flex items-center gap-2 cursor-pointer text-xs font-bold text-emerald-700 mb-2">
+                            <input type="checkbox" id="docBudgetLinkCheck"
+                                class="w-4 h-4 cursor-pointer rounded accent-emerald-600"
+                                onchange="toggleBudgetSection(this.checked)">
+                            <i class="fa-solid fa-sack-dollar mr-1"></i> เชื่อมโยงกับระบบงบประมาณ
+                        </label>
+                        <div id="docBudgetDetails"
+                            class="hidden space-y-2 p-3 bg-emerald-50 border border-emerald-200 rounded-xl">
+                            <div>
+                                <label class="block text-[10px] font-bold text-emerald-700 mb-1">โครงการ / รายการ <span
+                                        class="text-rose-500">*</span></label>
+                                <input type="text" id="docBudgetProjectInput" list="docBudgetProjectList"
+                                    placeholder="พิมพ์ค้นหาชื่อโครงการ/กิจกรรม..."
+                                    class="w-full p-2 bg-white border border-emerald-200 rounded-lg text-xs font-medium text-slate-700 outline-none focus:ring-2 focus:ring-emerald-200">
+                                <datalist id="docBudgetProjectList">
+                                    <option value="โครงการปรับปรุงห้องเรียน ปี 2568 (BUD001)"></option>
+                                    <option value="โครงการจัดซื้อครุภัณฑ์คอมพิวเตอร์ (BUD002)"></option>
+                                    <option value="โครงการอบรมครูประจำปี 2568 (BUD003)"></option>
+                                    <option value="โครงการพัฒนาหลักสูตร (BUD004)"></option>
+                                </datalist>
+                            </div>
+                            <div class="grid grid-cols-2 gap-2">
+                                <div>
+                                    <label class="block text-[10px] font-bold text-emerald-700 mb-1">จำนวนเงิน
+                                        (บาท)</label>
+                                    <input type="number" id="docBudgetAmount" min="0" step="0.01" placeholder="0.00"
+                                        class="w-full p-2 bg-white border border-emerald-200 rounded-lg text-xs font-medium text-slate-700 outline-none focus:ring-2 focus:ring-emerald-200">
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] font-bold text-emerald-700 mb-1">หมวดรายจ่าย</label>
+                                    <select id="docBudgetCategory"
+                                        class="w-full p-2 bg-white border border-emerald-200 rounded-lg text-xs font-medium text-slate-700 outline-none focus:ring-2 focus:ring-emerald-200">
+                                        <option value="">-- เลือกหมวด --</option>
+                                        <option value="ค่าวัสดุ">ค่าวัสดุ</option>
+                                        <option value="ค่าครุภัณฑ์">ค่าครุภัณฑ์</option>
+                                        <option value="ค่าตอบแทน">ค่าตอบแทน</option>
+                                        <option value="ค่าใช้สอย">ค่าใช้สอย</option>
+                                        <option value="ค่าสาธารณูปโภค">ค่าสาธารณูปโภค</option>
+                                        <option value="งบลงทุน">งบลงทุน</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div>
+                                <label
+                                    class="block text-[10px] font-bold text-emerald-700 mb-1">รายละเอียดการขออนุมัติ</label>
+                                <textarea id="docBudgetDetail" rows="2"
+                                    class="w-full p-2 bg-white border border-emerald-200 rounded-lg text-xs text-slate-700 outline-none focus:ring-2 focus:ring-emerald-200 resize-none"
+                                    placeholder="ระบุรายละเอียดของรายการขออนุมัติงบประมาณ..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+
                     <button type="submit" id="btnSubmitDocRequest"
                         class="w-full py-3 bg-blue-600 text-white font-bold rounded-xl shadow-[0_4px_14px_0_rgb(37,99,235,0.39)] hover:bg-blue-700 hover:shadow-[0_6px_20px_rgba(37,99,235,0.23)] transition text-sm flex items-center justify-center gap-2 mt-auto">
                         <i class="fa-solid fa-paper-plane"></i> ยืนยันขอเลขเอกสาร
                     </button>
                 </form>
+
             </div>
 
             <!-- ประวัติออกเลขล่าสุด -->
@@ -456,27 +553,27 @@
 
                 <!-- Filters -->
                 <div class="flex flex-wrap gap-2 mb-4">
-                    <select
+                    <select id="saraban-type-filter" onchange="loadRecentDocRequests()"
                         class="p-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-bold text-slate-600 outline-none flex-1 min-w-[100px]">
-                        <option>ประเภททั้งหมด</option>
-                        <option>บันทึกข้อความ</option>
-                        <option>คำสั่ง</option>
-                        <option>หนังสือส่ง</option>
-                        <option>ประกาศ</option>
+                        <option value="">ประเภททั้งหมด</option>
+                        <option value="บันทึกข้อความ">บันทึกข้อความ</option>
+                        <option value="คำสั่ง">คำสั่ง</option>
+                        <option value="หนังสือส่ง">หนังสือส่ง</option>
+                        <option value="ประกาศ">ประกาศ</option>
                     </select>
-                    <select
+                    <select id="saraban-year-filter" onchange="loadRecentDocRequests()"
                         class="p-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-bold text-slate-600 outline-none w-24">
-                        <option>ปี 2567</option>
-                        <option>ปี 2566</option>
+                        <!-- Populated by JS -->
                     </select>
                     <div class="relative flex-[2] min-w-[120px]">
                         <i
                             class="fa-solid fa-search absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-[10px]"></i>
-                        <input type="text" placeholder="ค้นหาเลขเดิม/เรื่อง..."
+                        <input type="text" id="saraban-search-filter" oninput="loadRecentDocRequests()"
+                            placeholder="ค้นหาเลขเดิม/เรื่อง..."
                             class="w-full pl-8 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs outline-none">
                     </div>
                 </div>
-                <div class="overflow-x-auto custom-scrollbar border border-slate-100 rounded-2xl">
+                <div class="max-sm:hidden overflow-x-auto custom-scrollbar border border-slate-100 rounded-2xl">
                     <table class="min-w-full text-sm text-left text-slate-500">
                         <thead class="text-xs text-slate-500 uppercase bg-slate-50 border-b border-slate-100">
                             <tr>
@@ -484,12 +581,13 @@
                                 <th class="px-4 py-3 font-bold">ประเภท</th>
                                 <th class="px-4 py-3 font-bold">เรื่อง</th>
                                 <th class="px-4 py-3 font-bold">ผู้ขอ</th>
-                                <th class="px-4 py-3 text-right font-bold">เวลา</th>
+                                <th class="px-4 py-3 text-right font-bold w-24">เวลา</th>
+                                <th class="px-4 py-3 text-right font-bold w-24">จัดการ</th>
                             </tr>
                         </thead>
                         <tbody id="docHistoryTable" class="divide-y divide-slate-100">
                             <tr>
-                                <td colspan="5" class="text-center py-10 text-slate-400">
+                                <td colspan="6" class="text-center py-10 text-slate-400">
                                     <div
                                         class="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-3">
                                         <i class="fa-solid fa-folder-open text-2xl text-slate-300"></i>
@@ -499,6 +597,15 @@
                             </tr>
                         </tbody>
                     </table>
+                </div>
+                <!-- Card layout for mobile -->
+                <div id="docHistoryCards" class="sm:hidden space-y-2"></div>
+
+                <div id="saraban-show-all-btn-container" class="mt-4 text-center hidden">
+                    <button type="button" onclick="openAllDocHistoryModal()"
+                        class="text-xs font-bold text-blue-600 hover:text-blue-700 bg-blue-50 px-4 py-2 rounded-lg transition">
+                        แสดงทั้งหมด <i class="fa-solid fa-expand ml-1"></i>
+                    </button>
                 </div>
             </div>
         </div>
